@@ -1,0 +1,53 @@
+<!-- cart.html - Shopping Cart Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div id="cart-container"></div>
+    <h2>Total: <span id="total-price">$0</span></h2>
+    <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+    
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function displayCart() {
+            const cartContainer = document.getElementById("cart-container");
+            const totalPriceElement = document.getElementById("total-price");
+            cartContainer.innerHTML = "";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                cartContainer.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.ImageURL}" alt="${item.Name}" width="100">
+                        <h3>${item.Name}</h3>
+                        <p>Price: ${item.Price}</p>
+                        <button onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                `;
+                total += parseFloat(item.Price.replace("$", ""));
+            });
+
+            totalPriceElement.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            displayCart();
+        }
+
+        function proceedToCheckout() {
+            alert("Proceeding to checkout (Functionality to be implemented)");
+        }
+
+        displayCart();
+    </script>
+</body>
+</html>
