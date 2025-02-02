@@ -1,0 +1,54 @@
+<!-- products.html - Product Listing Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalogue</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Product Catalogue</h1>
+    
+    <label for="category">Filter by Category:</label>
+    <select id="category">
+        <option value="all">All</option>
+        <option value="1">Laptops</option>
+        <option value="2">Headphones</option>
+        <option value="3">Smartphones</option>
+    </select>
+    
+    <div class="product-container" id="product-list"></div>
+    
+    <script>
+        const products = [
+            { ProductID: 1, Name: "Laptop", Price: "$1200", Description: "High-performance laptop.", ImageURL: "laptop.jpg", CategoryID: 1 },
+            { ProductID: 2, Name: "Headphones", Price: "$150", Description: "Noise-canceling headphones.", ImageURL: "headphones.jpg", CategoryID: 2 },
+            { ProductID: 3, Name: "Smartphone", Price: "$800", Description: "Latest model smartphone.", ImageURL: "smartphone.jpg", CategoryID: 3 }
+        ];
+
+        function displayProducts(category) {
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = "";
+            products.forEach(product => {
+                if (category === "all" || product.CategoryID == category) {
+                    productList.innerHTML += `
+                        <div class="product">
+                            <img src="${product.ImageURL}" alt="${product.Name}">
+                            <h2>${product.Name}</h2>
+                            <p>${product.Price}</p>
+                            <a href="product_details.html?id=${product.ProductID}">View Details</a>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        document.getElementById("category").addEventListener("change", function() {
+            displayProducts(this.value);
+        });
+        
+        displayProducts("all");
+    </script>
+</body>
+</html>
