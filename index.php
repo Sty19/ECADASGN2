@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start the session to access session variables
 
 // Database connection
 include_once("db_config.php");
@@ -18,7 +17,6 @@ $featured_products = $result->fetch_all(MYSQLI_ASSOC);
 // Close the database connection
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,20 +28,7 @@ $conn->close();
 <body>
     <!-- Header Section -->
     <header>
-        <div class="welcome-message">
-            <h1>Welcome To BabyJoy Store</h1>
-            <p>We are having sales from 1 Feb to 21 Feb!</p>
-        </div>
-        <nav>
-            <a href="index.php">Home</a>
-            <a href="products.php">Browse Shop</a>
-            <a href="cart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
-            <?php if (isset($_SESSION['ShopperID'])) : ?>
-                <a href="logout.php">Logout</a>
-            <?php else : ?>
-                <a href="login.php">Sign Up / Login</a>
-            <?php endif; ?>
-        </nav>
+        <?php include 'header.php'; ?>
     </header>
 
     <!-- Main Content -->
