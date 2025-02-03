@@ -1,75 +1,126 @@
 <?php
-include 'db_config.php';  // Include database connection
+// Database connection
+$conn = new mysqli("localhost", "root", "", "ecadasgn1");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-$sql = "SELECT * FROM products";  // Fetch all products
-$result = $conn->query($sql);
+// Initialize filters
+$filters = [];
+
+// Check if a category filter is applied
+if (isset($_GET['category']) && !empty($_GET['category'])) {
+    $categoryID = (int) $_GET['category'];
+    $filters[] = "p.ProductID IN (SELECT ProductID FROM catproduct WHERE CategoryID = $categoryID)";
+}
+
+// Check if a search query is applied
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $searchTerm = $conn->real_escape_string($_GET['search']);
+    $filters[] = "(p.ProductTitle LIKE '%$searchTerm%' OR p.ProductDesc LIKE '%$searchTerm%')";
+}
+
+// Check if price range filter is applied
+if ((isset($_GET['min_price']) && $_GET['min_price'] !== '') || (isset($_GET['max_price']) && $_GET['max_price'] !== '')) {
+    $minPrice = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? floatval($_GET['min_price']) : 0;
+    $maxPrice = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? floatval($_GET['max_price']) : 999999;
+    $filters[] = "(p.Price BETWEEN $minPrice AND $maxPrice)";
+}
+
+// Check if "on offer" filter is applied
+if (isset($_GET['on_offer']) && $_GET['on_offer'] == '1') {
+    $currentDate = date("Y-m-d");
+    $filters[] = "(p.Offered = 1 AND p.OfferStartDate <= '$currentDate' AND p.OfferEndDate >= '$currentDate')";
+}
+
+// Build WHERE clause correctly
+$filterQuery = !empty($filters) ? "WHERE " . implode(" AND ", $filters) : "";
+
+// Fetch products with all applied filters
+$query = "SELECT p.* FROM product p $filterQuery ORDER BY p.ProductTitle ASC";
+$result = $conn->query($query);
+$products = $result->fetch_all(MYSQLI_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Catalogue</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<h1>Product Catalogue</h1>
-
-<div class="product-container">
-    <?php
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<div class='product'>";
-            echo "<h2>" . $row["name"] . "</h2>";
-            echo "<p>Price: $" . $row["price"] . "</p>";
-            echo "<a href='product_details.php?id=" . $row["id"] . "'>View Details</a>";
-            echo "</div>";
-        }
-    } else {
-        echo "<p>No products found.</p>";
-    }
-    ?>
-</div>
-
-</body>
-</html>
-
-<?php
-$conn->close();  // Close connection
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - ECAD Store</title>
+    <title>Products - ECAD Store</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to ECAD Store</h1>
+        <h1>Our Products</h1>
         <nav>
             <a href="index.php">Home</a>
-            <a href="products.php">Products</a>
+            <a href="categories.php">Categories</a>
             <a href="cart.php">Cart</a>
         </nav>
     </header>
 
+    <section class="search-bar">
+        <form method="GET" action="products.php">
+            <input type="text" name="search" placeholder="Search for products..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+            <input type="number" name="min_price" placeholder="Min Price" value="<?php echo isset($_GET['min_price']) ? htmlspecialchars($_GET['min_price']) : ''; ?>">
+            <input type="number" name="max_price" placeholder="Max Price" value="<?php echo isset($_GET['max_price']) ? htmlspecialchars($_GET['max_price']) : ''; ?>">
+            <label><input type="checkbox" name="on_offer" value="1" <?php echo isset($_GET['on_offer']) && $_GET['on_offer'] == '1' ? 'checked' : ''; ?>> On Offer</label>
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
     <section class="product-list">
         <h2>Available Products</h2>
         <div class="products">
-            <?php foreach ($products as $product) : ?>
-                <div class="product">
-                    <h3><?php echo $product['Name']; ?></h3>
-                    <p>Price: $<?php echo number_format($product['Price'], 2); ?></p>
-                    <a href="product_details.php?id=<?php echo $product['ProductID']; ?>">View Details</a>
-                </div>
-            <?php endforeach; ?>
+            <?php if (empty($products)) : ?>
+                <p>No products found.</p>
+            <?php else : ?>
+                <?php foreach ($products as $product) : ?>
+                    <div class="product">
+                        <?php
+                        // Get image filename from database
+                        $imageName = $product['ProductImage'];
+                        $imagePath = "ECAD2024Oct_Assignment_1_Input_Files/Images/Products/" . $imageName;
+                        
+                        // Check if the image file exists
+                        if (file_exists($imagePath)) {
+                            echo "<img src='$imagePath' alt='{$product['ProductTitle']}' width='200'>";
+                        } else {
+                            echo "<img src='images/default.jpg' alt='No Image' width='200'>";
+                        }
+                        ?>
+                        <h3><?php echo $product['ProductTitle']; ?></h3>
+                        
+                        <?php
+                        // Check if the product is on offer and within offer date range
+                        $currentDate = date("Y-m-d");
+                        if ($product['Offered'] == 1 && $product['OfferStartDate'] <= $currentDate && $product['OfferEndDate'] >= $currentDate) {
+                            echo "<p class='offer-price'>On Offer: $" . number_format($product['OfferedPrice'], 2) . "</p>";
+                            echo "<p class='original-price'><s>Original Price: $" . number_format($product['Price'], 2) . "</s></p>";
+                        } else {
+                            echo "<p>Price: $" . number_format($product['Price'], 2) . "</p>";
+                        }
+                        ?>
+                        
+                        <?php if ($product['Quantity'] <= 0): ?>
+                            <p class="out-of-stock">Out of Stock</p>
+                            <button disabled>Add to Cart</button>
+                        <?php else: ?>
+                            <form action="cart.php" method="POST">
+                                <input type="hidden" name="product_id" value="<?php echo $product['ProductID']; ?>">
+                                <button type="submit">Add to Cart</button>
+                            </form>
+                        <?php endif; ?>
+                        
+                        <a href="product_details.php?id=<?php echo $product['ProductID']; ?>">View Details</a>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </section>
 </body>
 </html>
+
+
