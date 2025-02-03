@@ -1,12 +1,12 @@
 <?php
 // Database connection
-$conn = new mysqli("localhost", "root", "", "ecad_db");
+$conn = new mysqli("localhost", "root", "", "ecadasgn1");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 // Fetch all products
-$result = $conn->query("SELECT * FROM products");
+$result = $conn->query("SELECT * FROM product");
 $products = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
@@ -33,7 +33,7 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
         <div class="products">
             <?php foreach ($products as $product) : ?>
                 <div class="product">
-                    <h3><?php echo $product['Name']; ?></h3>
+                    <h3><?php echo $product['ProductTitle']; ?></h3>
                     <p>Price: $<?php echo number_format($product['Price'], 2); ?></p>
                     <a href="product_details.php?id=<?php echo $product['ProductID']; ?>">View Details</a>
                 </div>
