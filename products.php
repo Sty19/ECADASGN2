@@ -59,14 +59,14 @@ $conn->close();  // Close connection
         </nav>
     </header>
 
-    <section class="featured-products">
-        <h2>Featured Products</h2>
-        <div class="product-list">
-            <?php foreach ($featured_products as $product) : ?>
+    <section class="product-list">
+        <h2>Available Products</h2>
+        <div class="products">
+            <?php foreach ($products as $product) : ?>
                 <div class="product">
                     <h3><?php echo $product['Name']; ?></h3>
                     <p>Price: $<?php echo number_format($product['Price'], 2); ?></p>
-                    <a href="product_details.php?id=<?php echo $product['ProductID']; }">View Details</a>
+                    <a href="product_details.php?id=<?php echo $product['ProductID']; ?>">View Details</a>
                 </div>
             <?php endforeach; ?>
         </div>
