@@ -8,9 +8,9 @@ if ($conn->connect_error) {
 }
 
 // Fetch featured products (products currently on offer)
-$query = "SELECT ProductID, Name, Price, OfferedPrice, Inventory, ImageURL 
-          FROM products 
-          WHERE Offered = 1 AND Inventory > 0 
+$query = "SELECT ProductID, ProductTitle, Price, OfferedPrice, Quantity, ProductImage 
+          FROM product
+          WHERE OfferedPrice = 1 AND Quantity > 0 
           ORDER BY RAND() LIMIT 4";
 $result = $conn->query($query);
 $featured_products = $result->fetch_all(MYSQLI_ASSOC);
@@ -23,7 +23,7 @@ $conn->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to BabyJoy Store</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -55,8 +55,8 @@ $conn->close();
                 <?php if (!empty($featured_products)) : ?>
                     <?php foreach ($featured_products as $product) : ?>
                         <div class="product">
-                            <img src="<?php echo htmlspecialchars($product['ImageURL']); ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
-                            <h3><?php echo htmlspecialchars($product['Name']); ?></h3>
+                            <img src="<?php echo htmlspecialchars($product['ProductImage']); ?>" alt="<?php echo htmlspecialchars($product['ProductTitle']); ?>">
+                            <h3><?php echo htmlspecialchars($product['ProductTitle']); ?></h3>
                             <p>Price: 
                                 <?php if ($product['OfferedPrice'] > 0) : ?>
                                     <span class="original-price">$<?php echo number_format($product['Price'], 2); ?></span>
@@ -65,7 +65,7 @@ $conn->close();
                                     $<?php echo number_format($product['Price'], 2); ?>
                                 <?php endif; ?>
                             </p>
-                            <?php if ($product['Inventory'] > 0) : ?>
+                            <?php if ($product['Quantity'] > 0) : ?>
                                 <a href="add_to_cart.php?ProductID=<?php echo $product['ProductID']; ?>">Add to Cart</a>
                             <?php else : ?>
                                 <p><strong>Out of Stock</strong></p>
