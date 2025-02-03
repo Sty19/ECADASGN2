@@ -1,12 +1,8 @@
 <?php
 // Database connection
-$conn = new mysqli("localhost", "root", "", "ecad_db");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include_once("db_config.php");
 // Fetch featured products (limit to 4 for homepage)
-$result = $conn->query("SELECT * FROM products ORDER BY RAND() LIMIT 4");
+$result = $conn->query("SELECT * FROM product ORDER BY RAND() LIMIT 4");
 $featured_products = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
@@ -25,6 +21,7 @@ $featured_products = $result->fetch_all(MYSQLI_ASSOC);
             <a href="index.php">Home</a>
             <a href="products.php">Products</a>
             <a href="cart.php">Cart</a>
+            <a href="login.php">Login</a>
         </nav>
     </header>
 
@@ -35,7 +32,7 @@ $featured_products = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="product">
                     <h3><?php echo $product['Name']; ?></h3>
                     <p>Price: $<?php echo number_format($product['Price'], 2); ?></p>
-                    <a href="product_details.php?id=<?php echo $product['ProductID']; }">View Details</a>
+                    <a href="product_details.php?id=<?php echo $product['ProductID'];?>">View Details</a>
                 </div>
             <?php endforeach; ?>
         </div>
