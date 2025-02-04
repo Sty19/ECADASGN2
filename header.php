@@ -23,7 +23,7 @@ session_start();
     <nav>
         <a href="index.php">Home</a>
         <a href="products.php">Browse Shop</a>
-        <a href="shoppingCart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
+        <a href="cart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
         <?php if (isset($_SESSION['ShopperID'])) : ?>
             <a href="logout.php">Logout</a>
         <?php else : ?>
