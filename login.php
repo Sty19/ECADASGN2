@@ -5,7 +5,6 @@
     <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to BabyJoy Store</title>
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
-    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/login.css">
 
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
