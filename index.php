@@ -31,34 +31,24 @@ $conn->close();
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
 <body>
     <!-- Header Section -->
     <header>
         <?php include 'header.php'; ?>
     </header>
+    <div class="sale-banner">
+  We are having sales from 1 Feb to 21 Feb!
+</div>
 
     <!-- Main Content -->
     <main>
-    <!-- Home Section Start -->
-	<section class="home" id="home">
-		<div class="main-text">
-            <h5 data-text= "Summer Collection">Baby Essentials Collection</h5>
-            
-            <h1>Everything You Need</h1>
-			&nbsp;&nbsp;<h2>for Your Little One</h2>
-             
-            
-			<p>Explore our wide selection of adorable baby clothing, fun toys, and must-have essentials to keep your baby happy, comfortable, and stylish.</p>
-            <a href="products.php" class="main-btn">Explore Now <i class='bx bx-right-arrow-alt'></i></a>
-        </div>
-        </div>
-	</section>
+       <!-- Home Section Start -->
+       <section class="home" id="home">
+        <h1>Create a cozy and joyful world for your little one today!</h1>
+        <p>We specialize in providing adorable baby clothing, fun toys, and must-have essentials to keep your baby happy, comfortable, and stylish.</p>
+        <a href="products.php" class="btn">Explore Now</a>
+        </section>
     <!-- Home Section End -->
 
         <!-- Featured Products Section -->
@@ -106,5 +96,7 @@ $conn->close();
     <footer>
         <p>&copy; 2025 BabyJoy Store. All rights reserved.</p>
     </footer>
+
+    <script src="ECAD2024Oct_Assignment_1_Input_Files/js/custom.js"></script>
 </body>
 </html>

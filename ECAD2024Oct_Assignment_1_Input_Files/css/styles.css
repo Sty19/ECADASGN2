@@ -1,180 +1,198 @@
-*{
-    padding: 0; 
-    margin: 0; 
-    box-sizing: border-box; 
-    font-family: 'Jost', sans-serif;
-    list-style: none; 
-    text-decoration: none; 
-    scroll-behavior: smooth; 
-    scroll-padding-top: 3rem; 
-}
-:root{
-    --main-color: #6699CC;
-    --text-color: #0f172a;
-    --other-color: #334155; 
-    --second-color: #eb4e4e; 
-    --bg-color: #ffffff; 
-    --big-font: 4.5rem; 
-    --h2-font: 2.6em; 
-    --p-font: 1.1rem; 
-}
-body{
-    background: var(--bg-color); 
-    color: var(--text-color); 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  transition: 0.2s linear;
 }
 
-h1, h2 { display: inline; }
-
-h2
-{ 
-    position: relative; 
-    font-size: 3.69vw; 
-    color: #2a2539; 
+:root {
+  --black: #16161d;
+  --white: #fff;
+  --light-color: #808080;
+  --light-bg: #f5f5f8;
+  --google-color: #4285f4;
+  --twitter-color: #1da1f2;
+  --youtube-color: #ff0000;
+  --linkedin-color: #0e76a8;
+  --light-red: #f8d7da; /* Light red */
+  --dark-red: #e1a3a1; /* Darker red for accents */
+  --soft-pink: #f1d0d6; /* Soft pink for balance */
+  --muted-gray: #d6d6d6; /* Muted gray for subtle contrast */
 }
 
-h5
-{ 
-    position: relative; 
-    font-size: 3.69vw; 
-    color: #2a2539; 
-    -webkit-text-stroke: 0vw #0f0f0f; 
-    text-transform: uppercase; 
-} 
-
-/* header */
-header{
-    position: absolute; 
-    width: 100%; 
-    top: 0; 
-    right: 0; 
-    z-index: 1000; 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    background: transparent;
-    padding: 20px 14%; transition: all .50s ease; 
-}
-.logo{
-    display: flex; 
-    align-items: center; 
-    color: transparent; 
-    font-size: 40px; 
-    font-weight: 700; 
-    -webkit-text-stroke: 1px #fff; 
-    background: url(images/back.png); 
-    -webkit-background-clip: text; 
-    background-clip: text;
-    background-position: 0 0; 
-    animation: back 20s linear infinite; 
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
-.logo i{
-    vertical-align: middle;
-    margin-right: 8px; 
-    color: var(--main-color); 
+html::-webkit-scrollbar {
+  width: 1rem;
 }
-.navlist{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.navlist a{
-    color: var(--bg-color); 
-    font-size: var(--p-font);
-    font-weight: 600; 
-    margin: 0 30px; 
-    transition: all .50s ease;
-}
-.navlist a:hover{
-    color: var(--text-color);
-}
-.navlist a.active{
-    color: var(--bg-color);
-}
-.nav-icon{
-    display: flex; 
-    align-items: center; 
-    padding: 8px 15px; 
-    background: var(--main-color); 
-    border-radius: 3rem; 
-}
-.nav-icon i{
-    vertical-align: middle; 
-    font-size: 25px; 
-    color: var(--bg-color); 
-    margin-right: 8px; 
-    margin-left: 5px; 
-    transition: all .50s ease; 
-}
-#menu-icon{
-    font-size: 32px; 
-    color: var(--bg-color); 
-    z-index: 10001; 
-    cursor: pointer; 
-    display: none; 
-}
-.nav-icon i:hover{
-    transform: scale(1.1); 
-    color: var(--text-color); 
-}
-#menu-icon{
-    font-size: 35px;
-    color: #2c2c2c;
-    z-index: 10001;
-    cursor: pointer;
-}
-section{
-    padding: 5% 10%;
-}
-/* header */
 
-/* home */
-.home{
-    width: 100%;
-    height: 100vh;
-    background-image: url(Images/cover.jpg);
-    background-position: center;
-    background-size: cover;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: center;
-    gap: 1.5rem;
+html::-webkit-scrollbar-track {
+  background: var(--white);
 }
-.main-text h5{
-    color: #EE4B2B;
-    font-size: 20px;
-    text-transform: capitalize;
-    font-weight: 600;
+
+html::-webkit-scrollbar-thumb {
+  background: var(--black);
 }
-.main-text h1{
-    color: #000;
-    font-size: 65px;
-    text-transform: capitalize;
-    line-height: 1.1;
-    font-weight: 600;
-    margin: 6px 0 10px;
+
+section {
+  padding: 5rem 9%;
 }
-.main-text p{
-    color: #3a3b3b;
-    font-size: 20px;
-    font-style: italic;
-    margin-bottom: 20px;
+
+.btn {
+  color: var(--white);
+  font-weight: 400;
+  font-size: 1.8rem;
+  border: 0.1rem solid var(--white);
+  border-radius: 10rem;
+  padding: 1.5rem 4rem;
 }
-.main-btn{
-    display: inline-block;
-    color: #111;
-    font-size: 16px;
+ 
+.btn:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.heading {
+  font-size: 3.5rem;
+  font-weight: 500;
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.welcome-message {
+    font-size: 1.3rem; /* Font size for better balance */
+    color: var(--white);
+    text-decoration: none;
     font-weight: 500;
-    text-transform: capitalize;
-    border: 2px solid #111;
-    padding: 12px 25px;
-    transition: all .42s ease;
 }
-.main-btn:hover{
-    background-color: #000;
-    color: #fff;
+
+/* home */
+.home {
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  url('../Images/cover.jpg') no-repeat;  
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  text-align: center;
 }
-.main-btn i{
-    vertical-align: middle;
+
+.home h1 {
+  font-size: 6rem;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  color: var(--white);
+}
+
+.home p {
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  text-transform: none;
+  color: var(--white);
 }
 /* home */
+
+/* Header (Navbar) */
+.header {
+  position: relative; /* Removes the fixed position to place it below the banner */
+  top: 0; /* Keeps the navbar below the banner */
+  left: 0;
+  right: 0;
+  padding: 2.1rem 9%; /* Adjust padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensure logo & navbar are evenly spaced */
+  background: rgba(0, 0, 0, 0.9); /* Ensure visibility */
+  z-index: 90; /* Ensures the navbar stays below the banner */
+}
+
+.header .logo {
+  font-size: 2rem;
+  color: var(--white);
+  font-weight: 700;
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+.header .navbar {
+  display: flex;
+  gap: 3rem; /* Adds more space between nav items */
+  align-items: center; /* Aligns navbar items vertically */
+  justify-content: center; /* Centers navbar links */
+  flex-grow: 1; /* Ensure navbar takes up the available space */
+}
+
+.header .navbar a {
+  font-size: 1.3rem; /* Font size for better balance */
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.header .navbar a:hover {
+  color: var(--twitter-color);
+}
+
+/* Adjust the logout button to move to the right */
+.header .logout {
+  margin-left: auto; /* Push logout button to the far right */
+  font-size: 1.3rem;
+  color: var(--white);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.header .logout:hover {
+  color: var(--twitter-color);
+}
+/* Header */
+
+/* Sale Banner Style */
+.sale-banner {
+  background-color: var(--light-red); /* Light red background for the banner */
+  color: var(--black); /* Black text for contrast */
+  font-size: 1rem; /* Smaller font size */
+  font-weight: 400; /* Lighter font weight */
+  text-align: center;
+  padding: 0.8rem 0; /* Reduced padding for a more compact appearance */
+  
+  position: relative; /* Position it at the top */
+  top: 0; /* Keeps it at the top */
+  left: 0;
+  width: 100%; /* Full width of the viewport */
+  z-index: 100; /* Ensure the banner stays above the navbar */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}
+
+.sale-banner a {
+  color: var(--white); /* White text for any links */
+  text-decoration: underline; /* Underline for any sale-related links */
+}
+
+.sale-banner a:hover {
+  color: var(--twitter-color); /* Optional: change color on hover */
+}
+
+/* Button Hover Effects */
+.btn:hover {
+  background: var(--dark-red); /* Darker red background on hover */
+  color: var(--white);
+}
+

@@ -16,14 +16,14 @@ session_start();
 </head>
 
 <body>
-    <div class="welcome-message">
-        <h1>Welcome To BabyJoy Store, <?php echo isset($_SESSION["ShopperName"]) ? $_SESSION["ShopperName"] : "Guest"; ?></h1>
-        <p>We are having sales from 1 Feb to 21 Feb!</p>
-    </div>
-    <nav>
-        <a href="index.php">Home</a>
+     <!-- Header Section Start -->
+<header class="header">
+    <a href="index.php" class="logo">BabyJoy</a>
+
+    <nav class="navbar">
         <a href="products.php">Browse Shop</a>
         <a href="cart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
+        
         <?php if (isset($_SESSION['ShopperID'])) : ?>
             <a href="feedback.php">Give Feedback</a>
             <a href="profile.php">Edit Profile</a>
@@ -32,6 +32,12 @@ session_start();
             <a href="login.php">Login</a>
         <?php endif; ?>
     </nav>
+    <div class="welcome-message">
+                <h4><?php echo isset($_SESSION["ShopperName"]) ? $_SESSION["ShopperName"] : "Guest"; ?></h4>
+            </div>
+</header>
+<!-- Header Section End -->
+
 </body>
     
 </html>
