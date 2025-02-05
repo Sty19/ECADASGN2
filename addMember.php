@@ -13,28 +13,44 @@ $pwdanswer = $_POST["pwdanswer"];
 $activestatus = 1;
 $dateentered = date("Y-m-d").date("h:i:sa");
 
-include("db_config.php");
-$qry = "INSERT INTO Shopper (Name, BirthDate, Address, Country, Phone, Email, Password, PwdQuestion, PwdAnswer, ActiveStatus, DateEntered)
-        VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-$stmt = $conn->prepare($qry);
+include_once("db_config.php");
+$email_count = 0;
 
-$stmt->bind_param("sssssssssis", $name, $BirthDate, $address, $country, $phone, $email, $password, $pwdquestion, $pwdanswer, $activestatus, $dateentered);
-if ($stmt->execute())
-{
-    $qry = "SELECT LAST_INSERT_ID() AS ShopperID";
-    $result = $conn->query($qry);
-    while($row = $result->fetch_array())
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
+    $query = "SELECT COUNT(*) FROM Shopper WHERE Email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->bind_result($email_count);
+    $stmt->fetch();
+    $stmt->close();
+}
+
+if ($email_count == 0){
+    $query = "INSERT INTO Shopper (Name, BirthDate, Address, Country, Phone, Email, Password, PwdQuestion, PwdAnswer, ActiveStatus, DateEntered) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+    $stmt = $conn->prepare($query);
+
+    $stmt->bind_param("sssssssssis", $name, $BirthDate, $address, $country, $phone, $email, $password, $pwdquestion, $pwdanswer, $activestatus, $dateentered);
+    if ($stmt->execute())
     {
-        $_SESSION["ShopperID"] = $row["ShopperID"];
+        $query = "SELECT LAST_INSERT_ID() AS ShopperID";
+        $result = $conn->query($query);
+        while($row = $result->fetch_array())
+        {
+            $_SESSION["ShopperID"] = $row["ShopperID"];
+        }
+        $Message = "Registration Successful! <br/>";
+        $_SESSION["ShopperName"] = $name;
     }
-    $Message = "Registration Successful! <br/>";
-    $_SESSION["ShopperName"] = $name;
+    else{
+        $Message = "<h3 style='color:red'>Error in inserting record</h3>";
+    }
+    $stmt->close();
+    $conn->close();
+    
+} else {
+    $Message = "<h3 style='color:red'>Email is already being used by another user</h3>";
 }
-else{
-    $Message = "<h3 style='color:red'>Error in inserting record</h3>";
-}
-$stmt->close();
-$conn->close();
 include("header.php");
 echo $Message;
 include("footer.php");

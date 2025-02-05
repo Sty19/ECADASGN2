@@ -2,6 +2,7 @@
 include("header.php"); 
 ?>
 <script type="text/javascript">
+
 function validateForm()
 {
 	if (document.register.password.value != document.register.password2.value){
