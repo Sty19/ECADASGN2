@@ -25,6 +25,7 @@ session_start();
         <a href="products.php">Browse Shop</a>
         <a href="cart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
         <?php if (isset($_SESSION['ShopperID'])) : ?>
+            <a href="profile.php">Edit Profile</a>
             <a href="logout.php">Logout</a>
         <?php else : ?>
             <a href="login.php">Login</a>

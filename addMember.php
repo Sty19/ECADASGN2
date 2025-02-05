@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $name = $_POST["name"];
 $birthdate = $_POST["birthdate"];
@@ -30,7 +29,7 @@ if ($email_count == 0){
     $query = "INSERT INTO Shopper (Name, BirthDate, Address, Country, Phone, Email, Password, PwdQuestion, PwdAnswer, ActiveStatus, DateEntered) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($query);
 
-    $stmt->bind_param("sssssssssis", $name, $BirthDate, $address, $country, $phone, $email, $password, $pwdquestion, $pwdanswer, $activestatus, $dateentered);
+    $stmt->bind_param("sssssssssis", $name, $birthdate, $address, $country, $phone, $email, $password, $pwdquestion, $pwdanswer, $activestatus, $dateentered);
     if ($stmt->execute())
     {
         $query = "SELECT LAST_INSERT_ID() AS ShopperID";
