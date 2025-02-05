@@ -37,9 +37,10 @@ $conn->close();
     <header>
         <?php include 'header.php'; ?>
     </header>
+    <!-- Header Section End -->
     <div class="sale-banner">
   We are having sales from 1 Feb to 21 Feb!
-</div>
+    </div>
 
     <!-- Main Content -->
     <main>

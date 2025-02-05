@@ -49,30 +49,43 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - ECAD Store</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/product.css">
+
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
 </head>
 <body>
+    <!-- Header Section -->
     <header>
-        <h1>Our Products</h1>
-        <nav>
-            <a href="index.php">Home</a>
-            <a href="categories.php">Categories</a>
-            <a href="cart.php">Cart</a>
-        </nav>
+        <?php include 'header.php'; ?>
     </header>
 
+    <!-- Header Section End -->
+    &nbsp;
     <section class="search-bar">
-        <form method="GET" action="products.php">
-            <input type="text" name="search" placeholder="Search for products..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <input type="number" name="min_price" placeholder="Min Price" value="<?php echo isset($_GET['min_price']) ? htmlspecialchars($_GET['min_price']) : ''; ?>">
-            <input type="number" name="max_price" placeholder="Max Price" value="<?php echo isset($_GET['max_price']) ? htmlspecialchars($_GET['max_price']) : ''; ?>">
-            <label><input type="checkbox" name="on_offer" value="1" <?php echo isset($_GET['on_offer']) && $_GET['on_offer'] == '1' ? 'checked' : ''; ?>> On Offer</label>
-            <button type="submit">Search</button>
-        </form>
-    </section>
+    <form method="GET" action="products.php">
+        <input type="text" name="search" placeholder="Search for products..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+        <input type="number" name="min_price" placeholder="Min Price" value="<?php echo isset($_GET['min_price']) ? htmlspecialchars($_GET['min_price']) : ''; ?>">
+        <input type="number" name="max_price" placeholder="Max Price" value="<?php echo isset($_GET['max_price']) ? htmlspecialchars($_GET['max_price']) : ''; ?>">
+        
+        <div class="checkbox-container">
+            <label>
+                <input type="checkbox" name="on_offer" value="1" <?php echo isset($_GET['on_offer']) && $_GET['on_offer'] == '1' ? 'checked' : ''; ?>> On Offer
+            </label>
+        </div>
+        &nbsp;&nbsp;&nbsp;
+        <button type="submit">Search</button>
+    </form>
+</section>
+
 
     <section class="product-list">
-        <h2>Available Products</h2>
+        <h1>Available Products</h1>
         <div class="products">
             <?php if (empty($products)) : ?>
                 <p>No products found.</p>
