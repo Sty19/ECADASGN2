@@ -24,6 +24,18 @@ $conn->close();
     <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to BabyJoy Store</title>
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
+
+        <!-- Box Icons -->
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <!-- Header Section -->
@@ -33,6 +45,22 @@ $conn->close();
 
     <!-- Main Content -->
     <main>
+    <!-- Home Section Start -->
+	<section class="home" id="home">
+		<div class="main-text">
+            <h5 data-text= "Summer Collection">Baby Essentials Collection</h5>
+            
+            <h1>Everything You Need</h1>
+			&nbsp;&nbsp;<h2>for Your Little One</h2>
+             
+            
+			<p>Explore our wide selection of adorable baby clothing, fun toys, and must-have essentials to keep your baby happy, comfortable, and stylish.</p>
+            <a href="products.php" class="main-btn">Explore Now <i class='bx bx-right-arrow-alt'></i></a>
+        </div>
+        </div>
+	</section>
+    <!-- Home Section End -->
+
         <!-- Featured Products Section -->
         <section class="featured-products">
             <h2>Featured Products (On Offer)</h2>
