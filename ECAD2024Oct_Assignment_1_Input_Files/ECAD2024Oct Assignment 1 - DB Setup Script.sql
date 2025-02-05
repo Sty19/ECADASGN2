@@ -219,7 +219,7 @@ values('Sanwood Baby Toddler Anti-Slip Sandal', 'Little feet need protection. Ou
 'Sanwood_Baby_Toddler_AntiSlip_Sandal.jpg', 24.70, 300, 1, 7.40, '2025-01-01', '2025-03-31');
 
 insert into Product(ProductTitle, ProductDesc, ProductImage, Price, Quantity) 
-values('Joovy Caboose Ultralight Stand-On Tandem Stroller', 'The new Caboose Ultralight is the lightest, most maneuverable tandem stroller available on the market today. It can navigate narrow spaces with ease. The large, sealed ball bearing wheels give your children a smooth ride and you’ll find it is super easy to push. Thanks to its minimal weight, you can steer with just one hand!',
+values('Joovy Caboose Ultralight Stand-On Tandem Stroller', 'The new Caboose Ultralight is the lightest, most maneuverable tandem stroller available on the market today. It can navigate narrow spaces with ease. The large, sealed ball bearing wheels give your children a smooth ride and youï¿½ll find it is super easy to push. Thanks to its minimal weight, you can steer with just one hand!',
 'Joovy_Caboose_Ultralight_Stand-On_Tandem_Stroller.jpg', 504.00, 100);
 
 insert into Product(ProductTitle, ProductDesc, ProductImage, Price, Quantity, Offered, OfferedPrice, OfferStartDate, OfferEndDate) 
@@ -283,7 +283,7 @@ insert into ProductSpec(ProductID, SpecID, SpecVal,Priority)
 values(4, 6, '22.1 pounds', 4);
 
 insert into ProductSpec(ProductID, SpecID, SpecVal,Priority) 
-values(5, 1, 'Use from newborn to toddler — up to 18 kg', 1);
+values(5, 1, 'Use from newborn to toddler ï¿½ up to 18 kg', 1);
 insert into ProductSpec(ProductID, SpecID, SpecVal,Priority) 
 values(5, 3, 'Light green', 2);
 insert into ProductSpec(ProductID, SpecID, SpecVal,Priority) 

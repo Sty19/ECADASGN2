@@ -1,7 +1,6 @@
-<?php
-session_start();
-?>
-
+<header>
+    <?php include 'header.php'; ?>
+</header>
 <div style="width:80%; margin:auto;">
     <form action="checkLogin.php" method="post">
         <div class="mb-3 row">
@@ -32,6 +31,7 @@ session_start();
                 <button type='submit'>Login</button>
                 <p>Please sign up if you do not have an account.</p>
                 <p><a href="forgetPassword.php">Forget Password</a></p>
+                <p><a href="signup.php">Signup For an Account</a></p>
             </div>
         </div>
     </form>

@@ -27,9 +27,9 @@ session_start();
         <?php if (isset($_SESSION['ShopperID'])) : ?>
             <a href="logout.php">Logout</a>
         <?php else : ?>
-            <a href="login.php">Sign Up / Login</a>
+            <a href="login.php">Login</a>
         <?php endif; ?>
-        </nav>
+    </nav>
 </body>
 
 </html>
