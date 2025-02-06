@@ -1,113 +1,100 @@
-<?php
-// Database connection
-$conn = new mysqli("localhost", "root", "", "ecadasgn1");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+<?php 
 session_start();
 
-// Ensure user is logged in before accessing cart
-if (!isset($_SESSION['ShopperID'])) {
-    die("Please log in to access the shopping cart.");
+if (isset($_POST['action'])) {
+ 	switch ($_POST['action']) {
+    	case 'add':
+        	addItem();
+            break;
+        case 'update':
+            updateItem();
+            break;
+		case 'remove':
+            removeItem();
+            break;
+    }
 }
 
-$shopperID = $_SESSION['ShopperID'];
+function addItem() {
+	if (! isset($_SESSION["ShopperID"])) {
+        echo $_SESSION["ShopperID"];
+		//header ("Location: login.php");
+		//exit;
+	}
+	include_once("db_config.php");
+	if (! isset($_SESSION["Cart"])){
+		$qry = "INSERT INTO Shopcart(ShopperID) VALUES(?)";
+		$stmt = $conn->prepare($qry);
+		$stmt->bind_param("i", $_SESSION["ShopperID"]);
+		$stmt->execute();
+		$stmt->close();
+		$qry = "SELECT LAST_INSERT_ID() AS ShopCartID";
+		$result = $conn->query($qry);
+		$row = $result->fetch_array();
+		$_SESSION["Cart"] = $row["ShopCartID"];
+	}
+  	$pid = $_POST["product_id"];
+	$quantity = $_POST["quantity"];
+	$qry = "SELECT * FROM ShopCartItem WHERE ShopCartID=? AND ProductID=?";
+	$stmt = $conn->prepare($qry);
+	$stmt->bind_param("ii", $_SESSION["Cart"], $pid);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$stmt->close();
+	$addNewItem = 0;
+	if ($result->num_rows > 0){
+		$qry = "UPDATE ShopCartItem SET Quantity=LEAST(Quantity+?, 10)
+				WHERE ShopCartID=? AND ProductID=?";
+		$stmt = $conn->prepare($qry);
+		$stmt->bind_param("iii", $quantity, $_SESSION["Cart"], $pid);
+		$stmt->execute();
+		$stmt->close();
+	}
+	else { 
+		$qry = "INSERT INTO ShopCartItem(ShopCartID, ProductID, Price, Name, Quantity)
+				SELECT ?, ?, Price, ProductTitle, ? FROM Product WHERE ProductID=?";
+		$stmt = $conn->prepare($qry);
+		$stmt->bind_param("iiii", $_SESSION["Cart"], $pid, $quantity, $pid);
+		$stmt->execute();
+		$stmt->close();
+		$addNewItem = 1;
+	}
 
-// Fetch cart items for the logged-in shopper
-$query = "SELECT si.ProductID, si.Price, si.Name, si.Quantity, p.ProductImage FROM shopcartitem si 
-          JOIN product p ON si.ProductID = p.ProductID 
-          JOIN shopcart sc ON si.ShopCartID = sc.ShopCartID 
-          WHERE sc.ShopperID = ? AND sc.OrderPlaced = 0";
+  	$conn->close();
+	if(isset($_SESSION["NumCartItem"])){
+		$_SEESION["NumCartItem"] = $_SESSION["NumCartItem"] + $addNewItem;
+	}
+	else{
+		$_SESSION["NumCartItem"] = 1;
+	}
+	header("Location: cart.php");
+	exit;
+}
 
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $shopperID);
-$stmt->execute();
-$result = $stmt->get_result();
-$cartItems = $result->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+function updateItem() {
+	if (! isset($_SESSION["Cart"])) {
+		header ("Location: login.php");
+		exit;
+	}
+	$cartid = $_SESSION["Cart"];
+	$pid = $_POST["product_id"];
+	$quantity = $_POST["quantity"];
+	include_once("db_config.php");
+	$qry = "UPDATE ShopCartItem SET Quantity=? WHERE ProductID=? AND ShopCartID=?";
+	$stmt = $conn->prepare($qry);
+	$stmt->bind_param("iii", $quantity, $pid, $cartid);
+	$stmt->execute();
+	$stmt->close();
+	$conn->close();
+	header("Location: cart.php");
+	exit();
+}
 
-// Calculate total items in cart
-$totalItems = array_sum(array_column($cartItems, 'Quantity'));
+function removeItem() {
+	if (! isset($_SESSION["Cart"])) {
+		include_once("db_config.php");
+		exit;
+	}
 
-// Calculate subtotal
-$subtotal = array_sum(array_map(function($item) {
-    return $item['Price'] * $item['Quantity'];
-}, $cartItems));
-
-// Shipping charge logic
-$shippingCharge = ($subtotal > 200) ? 0 : 5;
-
-// Total calculation
-$total = $subtotal + $shippingCharge;
+}		
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - ECAD Store</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Shopping Cart</h1>
-        <nav>
-            <a href="index.php">Home</a>
-            <a href="products.php">Products</a>
-            <a href="cart.php">Cart (<?php echo $totalItems; ?>)</a>
-        </nav>
-    </header>
-
-    <section class="cart">
-        <h2>Your Cart</h2>
-        <?php if (empty($cartItems)) : ?>
-            <p>Your cart is empty.</p>
-        <?php else : ?>
-            <table>
-                <tr>
-                    <th>Product</th>
-                    <th>Image</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Action</th>
-                </tr>
-                <?php foreach ($cartItems as $item) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($item['Name']); ?></td>
-                        <td><img src="ECAD2024Oct_Assignment_1_Input_Files/Images/Products/<?php echo $item['ProductImage']; ?>" width="50"></td>
-                        <td>$<?php echo number_format($item['Price'], 2); ?></td>
-                        <td>
-                            <form method="POST" action="update_cart.php">
-                                <input type="hidden" name="product_id" value="<?php echo $item['ProductID']; ?>">
-                                <input type="number" name="quantity" value="<?php echo $item['Quantity']; ?>" min="1">
-                                <button type="submit">Update</button>
-                            </form>
-                        </td>
-                        <td>$<?php echo number_format($item['Price'] * $item['Quantity'], 2); ?></td>
-                        <td><a href="remove_cart.php?product_id=<?php echo $item['ProductID']; ?>">Remove</a></td>
-                    </tr>
-                <?php endforeach; ?>
-                <tr>
-                    <td colspan="4"><strong>Subtotal:</strong></td>
-                    <td><strong>$<?php echo number_format($subtotal, 2); ?></strong></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="4"><strong>Shipping Charge:</strong></td>
-                    <td><strong>$<?php echo number_format($shippingCharge, 2); ?></strong></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="4"><strong>Total:</strong></td>
-                    <td><strong>$<?php echo number_format($total, 2); ?></strong></td>
-                    <td></td>
-                </tr>
-            </table>
-            <a href="checkout.php">Proceed to Checkout</a>
-        <?php endif; ?>
-    </section>
-</body>
-</html>

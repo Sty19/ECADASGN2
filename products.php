@@ -1,6 +1,5 @@
 <?php
-// Database connection
-$conn = new mysqli("localhost", "root", "", "ecadasgn1");
+include_once("db_config.php");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -122,7 +121,9 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
                             <button disabled>Add to Cart</button>
                         <?php else: ?>
                             <form action="cart.php" method="POST">
+                                <input type="hidden" name="action" value="add">
                                 <input type="hidden" name="product_id" value="<?php echo $product['ProductID']; ?>">
+                                <input type="number" name="quantity" value="1" min="1">
                                 <button type="submit">Add to Cart</button>
                             </form>
                         <?php endif; ?>
