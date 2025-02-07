@@ -79,9 +79,18 @@ if (isset($_SESSION["Cart"])) {
 		echo "<p style='text-align:right'; font-size:20px'>
 				Subtotal = S$".number_format($subTotal, 2);
 		$_SESSION["SubTotal"] = round($subTotal, 2);
+		// Delivery mode selection and checkout button
 		echo "<form method='post' action='checkoutProcess.php'>";
-		echo "<input type='image' style='float:right;'
-					src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'>";
+		echo "<div style='float:right; text-align:right; margin-top:20px'>";
+		echo "<h4>Delivery Mode:</h4>";
+		echo "<select name='deliveryMode' required style='padding:5px; margin-bottom:10px;'>";
+		echo "<option value='Normal'>Normal Delivery (\$5)</option>";
+		echo "<option value='Express'>Express Delivery (\$10)</option>";
+		echo "</select>";
+		echo "<br>";
+		echo "<input type='submit' value='Proceed to Checkout' 
+		            style='padding:10px 20px; background-color:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;'>";
+		echo "</div>";
 		echo "</form></p>";
 	}
 	else {
