@@ -27,6 +27,7 @@ $conn->close();
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/feature.css">
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/collection.css">
 
+
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
