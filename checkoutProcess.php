@@ -41,7 +41,9 @@ if($_POST) //Post Data received from Shopping cart page.
 	$_SESSION["Tax"] = round($_SESSION["SubTotal"] * 0.09, 2);
 	
 	// Compute Shipping charge - S$5.00 per trip
-	$_SESSION["ShipCharge"] = 5.00;
+	//$_SESSION["ShipCharge"] = 5.00;
+     // Compute Shipping charge - S$5.00 or S$10.00 per trip depending on delivery mode
+     $_SESSION["ShipCharge"] = ($_SESSION['deliveryMode'] === 'Express') ? 10.00 : 5.00;
 	
 	//Data to be sent to PayPal
 	$padata = '&CURRENCYCODE='.urlencode($PayPalCurrencyCode).
