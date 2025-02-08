@@ -7,7 +7,7 @@ $PayPalCurrencyCode = 'SGD'; //Paypal Currency Code
 //URL to redirect to after PayPal has complete the online payment
 $PayPalReturnURL 	= 'http://localhost:8081/ECADASGN2/checkoutProcess.php'; 
 //URL to redirect to if user clicks cancel                
-$PayPalCancelURL 	= 'http://localhost:8081/ECADASGN2/shoppingCart.php'; 
+$PayPalCancelURL 	= 'http://localhost:8081/ECADASGN2/checkoutProcess.php?cancel=1'; 
                 	
 function PPHttpPost($methodName_, $nvpStr_, $PayPalApiUsername, $PayPalApiPassword, 
                     $PayPalApiSignature, $PayPalMode) {

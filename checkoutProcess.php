@@ -1,65 +1,85 @@
 <?php
 session_start();
-include("header.php"); // Include the Page Layout header
-include_once("myPayPal.php"); // Include the file that contains PayPal settings
+// Handle PayPal cancellation
+if (isset($_GET['cancel'])) {
+    unset($_SESSION['Items']);
+    unset($_SESSION['Cart']);
+    $_SESSION["NumCartItem"] = 0;
+    $_SESSION['cancel_message'] = "Payment was canceled. Cart has been reset.";
+    header("Location: " . strtok($_SERVER['REQUEST_URI'], '?')); // Clean URL
+    exit;
+}
+include("header.php");
+include_once("myPayPal.php"); // Make sure this file contains your PayPal configurations
 include("db_config.php");
+?>
+<div class="container text-center mt-5">
+    <h3 class="text-danger mb-4">Payment Cancelled</h3>
+    <p class="lead">Your payment was not completed. What would you like to do next?</p>
+    
+    <div class="d-flex justify-content-center gap-3" style="margin-top: 20px;">
+        <a href="cart.php" class="btn btn-primary btn-lg" style="display: inline-block; width: auto; visibility: visible;">
+            <i class="bi bi-cart"></i> Return to Cart
+        </a>
+        <a href="products.php" class="btn btn-success btn-lg" style="display: inline-block; width: auto; visibility: visible;">
+            <i class="bi bi-shop"></i> Continue Shopping
+        </a>
+    </div>
+</div>
 
-if($_POST) //Post Data received from Shopping cart page.
-{
-	// Check to ensure each product item saved in the associative
-	//                array is not out of stock
-	foreach($_SESSION["Items"] as $key=>$item){
-		$qty = $item["quantity"];
-		$pid = $item["productId"];
-		$qry = "SELECT * FROM product where ProductID = ?";
-		$stmt = $conn->prepare($qry);
-		$stmt->bind_param("i",$pid);
-		$stmt->execute();
-		$result = $stmt->get_result();
-		$stmt->close();
-		while ($row = $result->fetch_array()) {
-			if ($row["Quantity"] < $qty){
-				echo "Product $item[productId] : $item[name] is out of the stock!<br/>";
-				echo "Please return to shopping cart to amend your purchase.<br/>";
-				include("footer.php");
-				exit;
-			}
-		}
-	}
-	
-	$paypal_data = '';
-	// Get all items from the shopping cart, concatenate to the variable $paypal_data
-	// $_SESSION['Items'] is an associative array
-	foreach($_SESSION['Items'] as $key=>$item) {
-		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY'.$key.'='.urlencode($item["quantity"]);
-	  	$paypal_data .= '&L_PAYMENTREQUEST_0_AMT'.$key.'='.urlencode($item["price"]);
-	  	$paypal_data .= '&L_PAYMENTREQUEST_0_NAME'.$key.'='.urlencode($item["name"]);
-		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($item["productId"]);
-	}
-	
-	// Compute GST amount 7% for Singapore, round the figure to 2 decimal places
-	$_SESSION["Tax"] = round($_SESSION["SubTotal"] * 0.09, 2);
-	
-	// Compute Shipping charge - S$5.00 per trip
-	//$_SESSION["ShipCharge"] = 5.00;
-     // Compute Shipping charge - S$5.00 or S$10.00 per trip depending on delivery mode
-     $_SESSION["ShipCharge"] = ($_SESSION['deliveryMode'] === 'Express') ? 10.00 : 5.00;
-	
-	//Data to be sent to PayPal
-	$padata = '&CURRENCYCODE='.urlencode($PayPalCurrencyCode).
-			  '&PAYMENTACTION=Sale'.
-			  '&ALLOWNOTE=1'.
-			  '&PAYMENTREQUEST_0_CURRENCYCODE='.urlencode($PayPalCurrencyCode).
-			  '&PAYMENTREQUEST_0_AMT='.urlencode($_SESSION["SubTotal"] +
-				                                 $_SESSION["Tax"] + 
-												 $_SESSION["ShipCharge"]).
-			  '&PAYMENTREQUEST_0_ITEMAMT='.urlencode($_SESSION["SubTotal"]). 
-			  '&PAYMENTREQUEST_0_SHIPPINGAMT='.urlencode($_SESSION["ShipCharge"]). 
-			  '&PAYMENTREQUEST_0_TAXAMT='.urlencode($_SESSION["Tax"]). 	
-			  '&BRANDNAME='.urlencode("Baby Joy Store").
-			  $paypal_data.				
-			  '&RETURNURL='.urlencode($PayPalReturnURL ).
-			  '&CANCELURL='.urlencode($PayPalCancelURL);	
+<?php
+
+
+if ($_POST) {
+    if (!isset($_SESSION['Items']) || count($_SESSION['Items']) == 0) {
+        echo "No items in cart. Please add items to your cart.";
+        include("footer.php");
+        exit;
+    }
+
+    // Calculate subtotal from session items
+    $subTotal = 0;
+    foreach ($_SESSION['Items'] as $item) {
+        $subTotal += $item["price"] * $item["quantity"];
+    }
+    $_SESSION["SubTotal"] = $subTotal;
+
+    // Determine shipping charge
+    if (isset($_POST['deliveryMode'])) {
+        $_SESSION['deliveryMode'] = $_POST['deliveryMode'];  // Ensure it's captured from POST and not just session
+        $shippingCharge = ($_POST['deliveryMode'] === '10') ? 10.00 : 5.00;
+    } else {
+        $shippingCharge = 5.00;  // Default shipping charge if not specified
+    }
+    $_SESSION["ShipCharge"] = $shippingCharge;
+
+    // Calculate tax (example rate of 9%)
+    $_SESSION["Tax"] = round($_SESSION["SubTotal"] * 0.09, 2);
+
+    // Prepare data for PayPal
+    $paypal_data = '';
+	foreach (array_values($_SESSION['Items']) as $key => $item) {
+		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY' . $key . '=' . urlencode($item["quantity"]);
+        $paypal_data .= '&L_PAYMENTREQUEST_0_AMT' . $key . '=' . urlencode($item["price"]);
+        $paypal_data .= '&L_PAYMENTREQUEST_0_NAME' . $key . '=' . urlencode($item["name"]);
+        $paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $key . '=' . urlencode($item["productId"]);
+    }
+
+    $finalTotal = $_SESSION["SubTotal"] + $_SESSION["Tax"] + $_SESSION["ShipCharge"];
+    $padata = '&CURRENCYCODE=' . urlencode($PayPalCurrencyCode) .
+              '&PAYMENTACTION=Sale' .
+              '&PAYMENTREQUEST_0_CURRENCYCODE=' . urlencode($PayPalCurrencyCode) .
+              '&PAYMENTREQUEST_0_AMT=' . urlencode($finalTotal) .
+              '&PAYMENTREQUEST_0_ITEMAMT=' . urlencode($_SESSION["SubTotal"]) .
+              '&PAYMENTREQUEST_0_SHIPPINGAMT=' . urlencode($_SESSION["ShipCharge"]) .
+              '&PAYMENTREQUEST_0_TAXAMT=' . urlencode($_SESSION["Tax"]) .
+              '&BRANDNAME=' . urlencode("BabyJoy") .
+              $paypal_data .
+              '&RETURNURL=' . urlencode($PayPalReturnURL) .
+              '&CANCELURL=' . urlencode($PayPalCancelURL);
+
+    // Log data being sent to PayPal for debugging
+    error_log("PayPal data: " . print_r($padata, true));	
 		
 	//We need to execute the "SetExpressCheckOut" method to obtain paypal token
 	$httpParsedResponseAr = PPHttpPost('SetExpressCheckout', $padata, $PayPalApiUsername, 
@@ -98,26 +118,26 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	
 	// Get all items from the shopping cart, concatenate to the variable $paypal_data
 	// $_SESSION['Items'] is an associative array
-	foreach($_SESSION['Items'] as $key=>$item) 
+	foreach (array_values($_SESSION['Items']) as $key => $item)
 	{
 		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY'.$key.'='.urlencode($item["quantity"]);
 	  	$paypal_data .= '&L_PAYMENTREQUEST_0_AMT'.$key.'='.urlencode($item["price"]);
 	  	$paypal_data .= '&L_PAYMENTREQUEST_0_NAME'.$key.'='.urlencode($item["name"]);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($item["productId"]);
 	}
-	
+	 // Recalculate final total to ensure accuracy
+	 $finalTotal = $_SESSION["SubTotal"] + $_SESSION["Tax"] + $_SESSION["ShipCharge"];
+
 	//Data to be sent to PayPal
 	$padata = '&TOKEN='.urlencode($token).
 			  '&PAYERID='.urlencode($playerid).
 			  '&PAYMENTREQUEST_0_PAYMENTACTION='.urlencode("SALE").
 			  $paypal_data.	
 			  '&PAYMENTREQUEST_0_ITEMAMT='.urlencode($_SESSION["SubTotal"]).
-              '&PAYMENTREQUEST_0_TAXAMT='.urlencode($_SESSION["Tax"]).
-              '&PAYMENTREQUEST_0_SHIPPINGAMT='.urlencode($_SESSION["ShipCharge"]).
-			  '&PAYMENTREQUEST_0_AMT='.urlencode($_SESSION["SubTotal"] + 
-			                                     $_SESSION["Tax"] + 
-								                 $_SESSION["ShipCharge"]).
-			  '&PAYMENTREQUEST_0_CURRENCYCODE='.urlencode($PayPalCurrencyCode);
+			  '&PAYMENTREQUEST_0_AMT=' . urlencode($finalTotal) .
+              '&PAYMENTREQUEST_0_SHIPPINGAMT=' . urlencode($_SESSION["ShipCharge"]) .
+              '&PAYMENTREQUEST_0_TAXAMT=' . urlencode($_SESSION["Tax"]) .
+              '&PAYMENTREQUEST_0_CURRENCYCODE=' . urlencode($PayPalCurrencyCode);
 	
 	//We need to execute the "DoExpressCheckoutPayment" at this point 
 	//to receive payment from user.
@@ -128,7 +148,28 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	//Check if everything went ok..
 	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || 
 	   "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
-	{
+	   // Assuming $httpParsedResponseAr contains the response from PayPal
+		if ("SUCCESS" != strtoupper($httpParsedResponseAr["ACK"]) && 
+		"SUCCESSWITHWARNING" != strtoupper($httpParsedResponseAr["ACK"])) {
+		// Check for specific error codes and handle them
+		if ($httpParsedResponseAr["L_ERRORCODE0"] == "10413") {
+			// Totals mismatch error
+			echo "<div style='color:red; margin-top: 20px;'>";
+			echo "<strong>Error:</strong> There was a problem with your order totals. ";
+			echo "The item totals do not match the total order amount as calculated. ";
+			echo "Please review your shopping cart for accuracy and ensure that all totals are correct. ";
+			echo "This may involve recalculating taxes, shipping, or discounts applied to your order.";
+			echo "</div>";
+		} else {
+			// General error handling
+			echo "<div style='color:red'><b>Error:</b> ";
+			echo urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]);
+			echo "</div>";
+		}
+		echo "<pre>" . print_r($httpParsedResponseAr, true) . "</pre>"; // Debug information
+		exit;
+		}
+	else{
 		// Update stock inventory in product table 
 		//                after successful checkout
 		$qry = "SELECT * FROM shopcartitem where ShopCartID = ?";
@@ -213,6 +254,9 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 				
 			$conn->close();
 				  
+			// Clear cart items from the session
+			unset($_SESSION['Items']);
+
 			// Reset the "Number of Items in Cart" session variable to zero.
 			$_SESSION["NumCartItem"] = 0;
 	  		

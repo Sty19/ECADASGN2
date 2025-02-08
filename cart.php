@@ -7,14 +7,13 @@ if (!isset($_SESSION['ShopperID'])) {
 	exit;
 }
 
-// Initialize cart item count if not set
-if (!isset($_SESSION['NumCartItem'])) {
-    $_SESSION['NumCartItem'] = 0;
+// Check if Cart is set before calling GetTotalItemsInCart
+if (isset($_SESSION['Cart'])) {
+    $totalItems = GetTotalItemsInCart($_SESSION['Cart']);
+    $_SESSION['NumCartItem'] = $totalItems;
+} else {
+    $totalItems = 0; // Assuming no items if Cart is not set
 }
-
-// Fetch total items in cart
-$totalItems = GetTotalItemsInCart($_SESSION['Cart']);
-$_SESSION['NumCartItem'] = $totalItems;
 
 echo "<div id='myShopCart' style='margin:auto'>";
 if (isset($_SESSION["Cart"])) {
