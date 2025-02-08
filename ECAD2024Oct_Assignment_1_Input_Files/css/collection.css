@@ -1,0 +1,119 @@
+/* Collection Card Styles */
+.collection-card {
+    position: relative;
+    min-width: 250px;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text */
+    color: #fff;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .collection-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .collection-card .card-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .collection-card .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  .collection-card .btn {
+    background-color: #000;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .collection-card .btn:hover {
+    background-color: #f8d7da; /* On hover, use the defined red */
+    color: #fff;
+  }
+  
+  .collection-card .btn ion-icon {
+    font-size: 1.2rem;
+  }
+  
+  /* Centering for collection list */
+  .collection-list {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    justify-content: center;
+  }
+  
+  /* Scrollbar styling */
+  .collection-list.has-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f9f9f9;
+  }
+  
+  .collection-list.has-scrollbar::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .collection-list.has-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+  
+  .collection-list.has-scrollbar::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .collection-list {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .collection-card {
+      min-width: 200px;
+      height: 250px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .collection-card {
+      min-width: 150px;
+      height: 200px;
+      padding: 1rem;
+    }
+  
+    .collection-card .card-title {
+      font-size: 1.25rem;
+    }
+  
+    .collection-card .btn {
+      padding: 0.5rem;
+    }
+  }
+  
