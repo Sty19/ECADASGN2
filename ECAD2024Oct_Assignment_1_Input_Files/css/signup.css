@@ -1,0 +1,114 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Form Container */
+.signup-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%; /* Reduced width */
+  background: #fff;
+  padding: 1.5rem; /* Less padding */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Page Title */
+.signup-title {
+  font-size: 1.6rem; /* Slightly smaller */
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Form Row Styling */
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem; /* Reduce spacing */
+}
+
+.form-label {
+  font-weight: bold;
+  color: #555;
+  flex: 1; /* Makes label take less space */
+  min-width: 120px;
+  text-align: right;
+  margin-right: 1rem; /* Space between label and input */
+}
+
+/* Input Fields */
+.form-input,
+.form-textarea {
+  flex: 2; /* Allows the input to take more space */
+  padding: 0.6rem; /* Reduced padding */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+/* Textarea */
+.form-textarea {
+  resize: vertical;
+  height: 80px; /* Reduce default height */
+}
+
+/* Button Styling */
+.signup-btn {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.6rem; /* Reduce button size */
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.signup-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signup-container {
+    width: 90%;
+  }
+
+  .form-group {
+    flex-direction: column; /* Stack labels and inputs on mobile */
+    align-items: flex-start;
+  }
+
+  .form-label {
+    text-align: left;
+    margin-bottom: 0.3rem;
+  }
+
+  .signup-btn {
+    padding: 0.75rem;
+  }
+}
