@@ -27,100 +27,83 @@ function validateForm()
     return true;
 }   
 </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to BabyJoy Store</title>
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/signup.css">
 
-<div style="width:80%; margin:auto;">
-<form name="register" action="addmember.php" method="post" 
-      onsubmit="return validateForm()">
-    <div class="mb-3 row">
-        <div class="col-sm-9 offset-sm-3">
-            <span class="page-title">Membership Registration</span>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="name">Name:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="name" id="name" 
-                   type="text" required /> (required)
-        </div>
-    </div>
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="birthdate">Birth Date:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="birthdate" id="birthdate" 
-                   type="date"/>
-        </div>
-    </div>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="address">Address:</label>
-        <div class="col-sm-9">
-            <textarea class="form-control" name="address" id="address"
-                      cols="25" rows="4" ></textarea>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="country">Country:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="country" id="country" type="text" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="phone">Phone:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="phone" id="phone" type="text" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="email">
-            Email Address:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="email" id="email" 
-                   type="email" required /> (required)
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="password">
-            Password:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="password" id="password" 
-                   type="password" required /> (required)
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="password2">
-            Retype Password:</label>
-        <div class="col-sm-9">
-            <input class="form-control" name="password2" id="password2" 
-                   type="password" required /> (required)
-        </div>
+</head>
+<body>
+<div class="signup-container">
+  <form name="register" action="addmember.php" method="post" onsubmit="return validateForm()">
+    <h2 class="signup-title">Membership Registration</h2>
+
+    <div class="form-group">
+      <label class="form-label" for="name">Name:</label>
+      <input class="form-input" name="name" id="name" type="text" required />
     </div>
 
-    <p>If you forget your password, this question and answer will help allow you to retreive your password</p>
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="pwdquestion">
-            Password Question: </label>
-        <div class="col-sm-9">
-            <input class="form-control" name="pwdquestion" id="pwdquestion" 
-                   type="text" required /> (required)
-        </div>
+    <div class="form-group">
+      <label class="form-label" for="birthdate">Birth Date:</label>
+      <input class="form-input" name="birthdate" id="birthdate" type="date"/>
     </div>
 
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="pwdanswer">
-            Password Answer: </label>
-        <div class="col-sm-9">
-            <input class="form-control" name="pwdanswer" id="pwdanswer" 
-                   type="text" required /> (required)
-        </div>
+    <div class="form-group">
+      <label class="form-label" for="address">Address:</label>
+      <textarea class="form-textarea" name="address" id="address" rows="4"></textarea>
     </div>
-    <div class="mb-3 row">       
-        <div class="col-sm-9 offset-sm-3">
-            <button type="submit">Register</button>
-        </div>
+
+    <div class="form-group">
+      <label class="form-label" for="country">Country:</label>
+      <input class="form-input" name="country" id="country" type="text" />
     </div>
-</form>
+
+    <div class="form-group">
+      <label class="form-label" for="phone">Phone:</label>
+      <input class="form-input" name="phone" id="phone" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="email">Email Address:</label>
+      <input class="form-input" name="email" id="email" type="email" required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Password:</label>
+      <input class="form-input" name="password" id="password" type="password" required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password2">Retype Password:</label>
+      <input class="form-input" name="password2" id="password2" type="password" required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="pwdquestion">Password Question:</label>
+      <input class="form-input" name="pwdquestion" id="pwdquestion" type="text" required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="pwdanswer">Password Answer:</label>
+      <input class="form-input" name="pwdanswer" id="pwdanswer" type="text" required />
+    </div>
+
+    <button class="signup-btn" type="submit">Register</button>
+  </form>
 </div>
+
 <?php 
 include("footer.php"); 
 ?>
+</body>
+</html>

@@ -1,44 +1,42 @@
 <?php
 // Database connection
-$conn = new mysqli("localhost", "root", "", "ecadasgn1");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include_once("db_config.php");
 
-// Fetch all products
-$result = $conn->query("SELECT * FROM product");
-$products = $result->fetch_all(MYSQLI_ASSOC);
+// Get the product ID from the URL
+$productID = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Fetch product details from the database
+$query = "SELECT ProductTitle, ProductDesc, ProductImage, Price FROM product WHERE ProductID = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $productID);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - ECAD Store</title>
-    <link rel="stylesheet" href="styles.css">
+    <title><?php echo $product['ProductTitle']; ?> - Product Details</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
 </head>
 <body>
-    <header>
-        <h1>Our Products</h1>
-        <nav>
-            <a href="index.php">Home</a>
-            <a href="products.php">Products</a>
-            <a href="cart.php">Cart</a>
-        </nav>
-    </header>
+    <h1><?php echo $product['ProductTitle']; ?></h1>
+    <div class="product-details">
+        <img src="ECAD2024Oct_Assignment_1_Input_Files/Images/Products/<?php echo $product['ProductImage']; ?>" alt="<?php echo $product['ProductTitle']; ?>" width="300">
+        <p><strong>Description:</strong> <?php echo $product['ProductDesc']; ?></p>
+        <p><strong>Price:</strong> $<?php echo number_format($product['Price'], 2); ?></p>
 
-    <section class="product-list">
-        <h2>Available Products</h2>
-        <div class="products">
-            <?php foreach ($products as $product) : ?>
-                <div class="product">
-                    <h3><?php echo $product['ProductTitle']; ?></h3>
-                    <p>Price: $<?php echo number_format($product['Price'], 2); ?></p>
-                    <a href="product_details.php?id=<?php echo $product['ProductID']; ?>">View Details</a>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
+        <form action="cartFunctions.php" method="post">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="product_id" value="<?php echo $productID; ?>">
+            <label for="quantity">Quantity:</label>
+            <input type="number" name="quantity" value="1" min="1" max="10">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+    <a href="products.php">← Back to Products</a>
 </body>
 </html>

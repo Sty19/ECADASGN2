@@ -24,6 +24,9 @@ $conn->close();
     <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to BabyJoy Store</title>
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/feature.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/collection.css">
+
 
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -81,18 +84,54 @@ $conn->close();
                 <?php endif; ?>
             </div>
         </section>
-
+        <!-- Featured Products Section -->
         <!-- Categories Section -->
-        <section class="categories">
-    <h2>Our Categories</h2>
-    <ul>
-        <li><a href="products.php?category=Baby Clothing">Baby Clothing</a></li>
-        <li><a href="products.php?category=Toys & Accessories">Toys & Accessories</a></li>
-        <li><a href="products.php?category=Diapers & Essentials">Diapers & Essentials</a></li>
-    </ul>
-</section>
-    </main>
+<section class="section collection">
+  <div class="container">
+    <ul class="collection-list has-scrollbar">
 
+      <li>
+        <div class="collection-card" style="background-image: url('ECAD2024Oct_Assignment_1_Input_Files/Images/babyclothing.jpg')">
+          <div class="card-content">
+            <h3 class="h4 card-title">Baby Clothing</h3>
+            <a href="products.php?category=Baby Clothing" class="btn btn-secondary">
+              <span>Explore All</span>
+              <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="collection-card" style="background-image: url('ECAD2024Oct_Assignment_1_Input_Files/Images/toys.jpg')">
+          <div class="card-content">
+            <h3 class="h4 card-title">Toys & Accessories</h3>
+            <a href="products.php?category=Toys & Accessories" class="btn btn-secondary">
+              <span>Explore All</span>
+              <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="collection-card" style="background-image: url('ECAD2024Oct_Assignment_1_Input_Files/Images/diapers.jpg')">
+          <div class="card-content">
+            <h3 class="h4 card-title">Diapers & Essentials</h3>
+            <a href="products.php?category=Diapers & Essentials" class="btn btn-secondary">
+              <span>Explore All</span>
+              <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+            </a>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+<!-- Categories Section End -->
+
+    </main>
     <!-- Footer Section -->
     <footer>
         <p>&copy; 2025 BabyJoy Store. All rights reserved.</p>
