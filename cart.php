@@ -7,6 +7,15 @@ if (!isset($_SESSION['ShopperID'])) {
 	exit;
 }
 
+// Initialize cart item count if not set
+if (!isset($_SESSION['NumCartItem'])) {
+    $_SESSION['NumCartItem'] = 0;
+}
+
+// Fetch total items in cart
+$totalItems = GetTotalItemsInCart($_SESSION['Cart']);
+$_SESSION['NumCartItem'] = $totalItems;
+
 echo "<div id='myShopCart' style='margin:auto'>";
 if (isset($_SESSION["Cart"])) {
 	include_once("db_config.php");
@@ -43,12 +52,7 @@ if (isset($_SESSION["Cart"])) {
 			echo "<form action='cartFunctions.php' method='post'>";
 			echo "<select name='quantity' onChange='this.form.submit()'>";
 			for ($i = 1; $i <= 10; $i++){
-				if($i == $row["Quantity"]){
-					$selected = "selected";
-				}
-				else{
-					$selected = ""; 
-				}
+				$selected = ($i == $row["Quantity"]) ? "selected" : ""; 
 				echo "<option value='$i' $selected>$i</option>";
 			}
 			echo "</select>";
@@ -66,7 +70,7 @@ if (isset($_SESSION["Cart"])) {
 			echo "</form>";
 			echo "</td>";
 			echo "</tr>";
-				$_SESSION["Items"][] = array("productId"=>$row["ProductID"],
+			$_SESSION["Items"][] = array("productId"=>$row["ProductID"],
 				"name"=>$row["Name"],
 				"price"=>$row["Price"],
 				"quantity"=>$row["Quantity"]);
@@ -75,19 +79,28 @@ if (isset($_SESSION["Cart"])) {
 		echo "</tbody>";
 		echo "</table>";
 		echo "</div>";
-				
+		
 		echo "<p style='text-align:right'; font-size:20px'>
-				Subtotal = S$".number_format($subTotal, 2);
+			Subtotal = S$".number_format($subTotal, 2);
 		$_SESSION["SubTotal"] = round($subTotal, 2);
-		// Delivery mode selection and checkout button
+
+        // Display updated cart count and total items
+		echo "<br>Total Items: $totalItems";
+
 		echo "<form method='post' action='checkoutProcess.php'>";
 		echo "<div style='float:right; text-align:right; margin-top:20px'>";
 		echo "<h4>Delivery Mode:</h4>";
-		echo "<select name='deliveryMode' required style='padding:5px; margin-bottom:10px;'>";
-		echo "<option value='Normal'>Normal Delivery (\$5)</option>";
-		echo "<option value='Express'>Express Delivery (\$10)</option>";
+		echo "<select id='deliveryMode' name='deliveryMode' required style='padding:5px; margin-bottom:10px;' onchange='updateTotal()'>";
+		echo "<option value='5'>Normal Delivery (\$5)</option>";
+		echo "<option value='10'>Express Delivery (\$10)</option>";
 		echo "</select>";
 		echo "<br>";
+
+        // Calculate the final total
+        $shippingCharge = ($_SESSION['SubTotal'] > 200) ? 0 : 5;
+        $finalTotal = $_SESSION['SubTotal'] + $shippingCharge;
+        echo "<p id='finalTotal'>Total: S$".number_format($finalTotal, 2)."</p>";
+
 		echo "<input type='submit' value='Proceed to Checkout' 
 		            style='padding:10px 20px; background-color:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;'>";
 		echo "</div>";
@@ -104,3 +117,14 @@ else {
 echo "</div>";
 include("footer.php");
 ?>
+
+<script>
+function updateTotal() {
+    var deliveryFee = parseInt(document.getElementById('deliveryMode').value);
+    var subtotal = <?php echo $_SESSION['SubTotal']; ?>;
+    var shippingCharge = (subtotal > 200) ? 0 : deliveryFee;
+    var finalTotal = subtotal + shippingCharge;
+
+    document.getElementById('finalTotal').innerHTML = 'Total: S$' + finalTotal.toFixed(2);
+}
+</script>
