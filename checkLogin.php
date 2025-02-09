@@ -22,9 +22,15 @@ if ($result->num_rows > 0) {
             exit;
         }
     }
-    echo "<h3 style='color:red'>Invalid Login Credentials</h3>";
+    echo "<div style='display: flex; justify-content: center; align-items: center; height: 100vh;'>
+        <h3 style='color:red;'>Invalid Login Credentials</h3>
+      </div>";
+
 } else {
-    echo "<h3 style='color:red'>Invalid Login Credentials</h3>";
+    echo "<div style='display: flex; justify-content: center; align-items: center; height: 100vh;'>
+        <h3 style='color:red;'>Invalid Login Credentials</h3>
+      </div>";
+
 }
 
 $conn->close();
