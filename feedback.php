@@ -28,13 +28,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $feedbacklist = [];
 $ShopperID = $_SESSION["ShopperID"];
 
-$query = "SELECT Subject, Content, Rank, DateTimeCreated FROM Feedback WHERE ShopperID = ?";
+$query = "SELECT Shopper.Name, Feedback.Subject, Feedback.Content, Feedback.Rank, Feedback.DateTimeCreated 
+          FROM Feedback 
+          INNER JOIN Shopper ON Feedback.ShopperID = Shopper.ShopperID";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("s", $ShopperID);
 $stmt->execute();
-$stmt->bind_result($Subject, $content, $rank, $datetimecreated);
+$stmt->bind_result($shopperName, $Subject, $content, $rank, $datetimecreated);
+
 while ($stmt->fetch()) {
     $feedbacklist[] = [
+        "Name" => $shopperName,
         "Subject" => $Subject,
         "Content" => $content,
         "Rank" => $rank,
@@ -91,6 +94,7 @@ $stmt->close();
         <table class="feedback-table">
             <thead>
                 <tr>
+                    <th>Shopper Name</th>
                     <th>Subject</th>
                     <th>Content</th>
                     <th>Rank</th>
@@ -100,6 +104,7 @@ $stmt->close();
             <tbody>
                 <?php foreach ($feedbacklist as $feedback): ?>
                     <tr>
+                        <td><?= htmlspecialchars($feedback["Name"]) ?></td>
                         <td><?= htmlspecialchars($feedback["Subject"]) ?></td>
                         <td><?= nl2br(htmlspecialchars($feedback["Content"])) ?></td>
                         <td><span class="rank"><?= htmlspecialchars($feedback["Rank"]) ?>/5</span></td>
