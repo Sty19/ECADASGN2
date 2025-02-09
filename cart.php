@@ -28,7 +28,7 @@ if (isset($_SESSION["Cart"])) {
     $stmt->close();
 
     if ($result->num_rows > 0) {
-        echo "<p class='page-title' style='text-align:center;'>Shopping Cart</p>";
+        echo "<h1 class='page-title' style='text-align:center;'>Shopping Cart</h1>";
         echo "<div class='table-responsive'>";
         echo "<table class='table table-hover'>";
         echo "<thead class='cart-header'>";
