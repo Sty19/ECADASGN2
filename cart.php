@@ -83,7 +83,7 @@ if (isset($_SESSION["Cart"])) {
         // Set shipping options based on subtotal
         if ($_SESSION['SubTotal'] > 200) {
             $deliveryOptions = [
-                "0" => "Free Shipping ($0)",
+                "0" => "Free Delivery ($0)",
                 "10" => "Express Delivery (S$10)"
             ];
         } else {
