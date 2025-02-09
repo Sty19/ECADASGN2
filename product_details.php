@@ -5,38 +5,68 @@ include_once("db_config.php");
 // Get the product ID from the URL
 $productID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Fetch product details from the database
-$query = "SELECT ProductTitle, ProductDesc, ProductImage, Price FROM product WHERE ProductID = ?";
-$stmt = $conn->prepare($query);
+// Fetch product details
+$stmt = $conn->prepare("SELECT * FROM product WHERE ProductID = ?");
 $stmt->bind_param("i", $productID);
 $stmt->execute();
 $result = $stmt->get_result();
-$product = $result->fetch_assoc();
-$stmt->close();
+$product = $result->fetch_assoc();  // Make sure data is fetched before closing
+$stmt->close(); // Close only after data is fully retrieved
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title><?php echo $product['ProductTitle']; ?> - Product Details</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/product_details.css">
+
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
 </head>
+<header>
+    <?php include 'header.php'; ?>
+</header>
 <body>
-    <h1><?php echo $product['ProductTitle']; ?></h1>
-    <div class="product-details">
-        <img src="ECAD2024Oct_Assignment_1_Input_Files/Images/Products/<?php echo $product['ProductImage']; ?>" alt="<?php echo $product['ProductTitle']; ?>" width="300">
-        <p><strong>Description:</strong> <?php echo $product['ProductDesc']; ?></p>
-        <p><strong>Price:</strong> $<?php echo number_format($product['Price'], 2); ?></p>
+
+<div class="product-container">
+    <div class="product-image">
+        <img src="ECAD2024Oct_Assignment_1_Input_Files/Images/Products/<?php echo htmlspecialchars($product['ProductImage']); ?>" alt="<?php echo htmlspecialchars($product['ProductTitle']); ?>">
+    </div>
+
+    <div class="product-info">
+        <h1><?php echo htmlspecialchars($product['ProductTitle']); ?></h1>
+
+        <p class="price">
+            <?php if ($product['OfferedPrice'] > 0): ?>
+                <span class="original-price">$<?php echo number_format($product['Price'], 2); ?></span>
+                <span class="discounted-price">$<?php echo number_format($product['OfferedPrice'], 2); ?></span>
+            <?php else: ?>
+                $<?php echo number_format($product['Price'], 2); ?>
+            <?php endif; ?>
+        </p>
+
+        <p class="description"><?php echo htmlspecialchars($product['ProductDesc']); ?></p>
 
         <form action="cartFunctions.php" method="post">
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="product_id" value="<?php echo $productID; ?>">
-            <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" value="1" min="1" max="10">
-            <button type="submit">Add to Cart</button>
+
+            <label class="quantity-label" for="quantity">Quantity:</label>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="10" required>
+
+            <button type="submit" class="add-to-cart">Add to Cart</button>
         </form>
+
+        <a href="products.php" class="back-link">← Back to Products</a>
     </div>
-    <a href="products.php">← Back to Products</a>
+</div>
+
 </body>
 </html>
