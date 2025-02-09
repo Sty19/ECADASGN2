@@ -89,6 +89,7 @@ $categories = $result->fetch_all(MYSQLI_ASSOC);
   .collection-card {
     position: relative;
     width: 100%;
+
     background-size: cover;
     background-position: center;
     border-radius: 10px;

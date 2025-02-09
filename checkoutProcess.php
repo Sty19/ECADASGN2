@@ -13,19 +13,119 @@ include("header.php");
 include_once("myPayPal.php"); // Make sure this file contains your PayPal configurations
 include("db_config.php");
 ?>
-<div class="container text-center mt-5">
-    <h3 class="text-danger mb-4">Payment Cancelled</h3>
-    <p class="lead">Your payment was not completed. What would you like to do next?</p>
-    
-    <div class="d-flex justify-content-center gap-3" style="margin-top: 20px;">
-        <a href="cart.php" class="btn btn-primary btn-lg" style="display: inline-block; width: auto; visibility: visible;">
-            <i class="bi bi-cart"></i> Return to Cart
-        </a>
-        <a href="products.php" class="btn btn-success btn-lg" style="display: inline-block; width: auto; visibility: visible;">
-            <i class="bi bi-shop"></i> Continue Shopping
-        </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to BabyJoy Store</title>
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/login.css">
+
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
+</head>
+<body>
+
+<style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #dc3545; /* Red color to indicate cancellation */
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .actions a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff; /* Blue button */
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .actions a:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Cancelled</h1>
+        <p>Your payment was not completed. What would you like to do next?</p>
+
+        <!-- Error Message Section (if applicable) -->
+        <?php if (isset($errorMessage)): ?>
+            <div class="error-message">
+                <?= htmlspecialchars($errorMessage) ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <a href="cart.php">Return to Cart</a>
+            <a href="products.php">Continue Shopping</a>
+        </div>
     </div>
-</div>
+</html>
+
 
 <?php
 
