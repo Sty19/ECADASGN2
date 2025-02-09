@@ -61,7 +61,7 @@ if (isset($_SESSION["Cart"])) {
             echo "<form action='cartFunctions.php' method='post'>"; 
             echo "<input type='hidden' name='action' value='remove' />"; 
             echo "<input type='hidden' name='product_id' value='{$row['ProductID']}'/>"; 
-			echo "<button type='submit' class='remove-item-btn'>Remove Item</button>";
+			echo "<button type='submit' class='remove-item-btn'><i class='fa-solid fa-trash-can'></i> Remove Item</button>";
             echo "</form>";
             echo "</td>";
             echo "</tr>";
@@ -83,7 +83,7 @@ if (isset($_SESSION["Cart"])) {
         // Set shipping options based on subtotal
         if ($_SESSION['SubTotal'] > 200) {
             $deliveryOptions = [
-                "0" => "Free Shipping ($0)",
+                "0" => "Free Delivery ($0)",
                 "10" => "Express Delivery (S$10)"
             ];
         } else {
@@ -122,8 +122,11 @@ include("footer.php");
 function updateTotal() {
     var deliveryFee = parseInt(document.getElementById('deliveryMode').value);
     var subtotal = <?php echo $_SESSION['SubTotal']; ?>;
-    var shippingCharge = (subtotal > 200) ? 0 : deliveryFee;
-    var finalTotal = subtotal + shippingCharge;
+    
+    // Calculate total price based on selected delivery option
+    var finalTotal = subtotal + deliveryFee;
+
+    // Update the final total in the HTML
     document.getElementById('finalTotal').innerHTML = '<strong>Total:</strong> S$' + finalTotal.toFixed(2);
 }
 </script>
