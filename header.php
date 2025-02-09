@@ -20,23 +20,31 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
      <!-- Header Section Start -->
 <header class="header">
-    <a href="index.php" class="logo">BabyJoy</a>
+    <a href="index.php" class="logo"> <i class="fa-solid fa-baby"></i> BabyJoy</a>
 
     <nav class="navbar">
-        <a href="products.php">Browse Shop</a>
-        <a href="cart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
+    <a href="products.php">
+    <i class="fa-solid fa-store"></i> Browse Shop
+    </a>
+    <a href="cart.php">
+    <i class="fa-solid fa-cart-shopping"></i> 
+    Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)
+    </a>
+
         <?php if (isset($_SESSION['ShopperID'])) : ?>
-            <a href="categories.php">Categories</a>
-            <a href="feedback.php">Give Feedback</a>
-            <a href="profile.php">Edit Profile</a>
-            <a href="logout.php">Logout</a>
+            <a href="categories.php"> <i class="fa-solid fa-layer-group"></i> Categories</a>
+            <a href="feedback.php"> <i class="fa-solid fa-comments"></i> Give Feedback</a>
+            <a href="profile.php"> <i class="fa-solid fa-user-pen"></i> Edit Profile</a>
+            <a href="logout.php"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         <?php else : ?>
-            <a href="login.php">Login</a>
+            <a href="login.php"> <i class="fa-solid fa-right-to-bracket"></i> Login</a>
         <?php endif; ?>
     </nav>
-    <div class="welcome-message">
-                <h4><?php echo isset($_SESSION["ShopperName"]) ? $_SESSION["ShopperName"] : "Guest"; ?></h4>
-            </div>
+    
+    <i class="fa-solid fa-user"></i> &nbsp;&nbsp;
+     <div class="welcome-message">
+    <h4><?php echo isset($_SESSION["ShopperName"]) ? $_SESSION["ShopperName"] : "Guest"; ?></h4>
+  </div>
 </header>
 <!-- Header Section End -->
 
