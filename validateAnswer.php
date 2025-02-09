@@ -1,4 +1,5 @@
 <?php
+include_once("header.php"); 
 include_once("db_config.php");
 
 $email = $_POST["email"];
@@ -12,11 +13,26 @@ $stmt->bind_result($correct_answer, $password);
 $stmt->fetch();
 $stmt->close();
 
+$conn->close();
+
 if (strtolower(trim($pwdanswer)) === strtolower(trim($correct_answer))) {
-    echo "Your password is: <b>" . htmlspecialchars($password) . "</b>";
+    $message = "<div style='font-size: 1.5rem; padding: 20px; text-align: center;'>Your password is: <b>" . htmlspecialchars($password) . "</b></div>";
 } else {
-    echo "Incorrect answer. Please try again.";
+    $message = "<div style='font-size: 1.5rem; padding: 20px; text-align: center; color: red;'>Incorrect answer. Please try again.</div>";
 }
 
-$conn->close();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif;">
+        <?= $message ?>
+    </div>
+</body>
+</html>

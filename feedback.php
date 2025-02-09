@@ -52,15 +52,11 @@ $stmt->close();
     <title>Welcome to BabyJoy Store</title>
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/feedback.css">
-
-    <!-- Box Icons -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 </head>
 <body>
-    <h1>Feedback History</h1>
+    <h1 class="page-title">Feedback History</h1>
     <div class="feedback-form">
         <h2>Submit Your Feedback</h2>
         <?php if (isset($message)): ?>
@@ -87,9 +83,10 @@ $stmt->close();
         </form>
     </div>
 
-    <!-- Feedback History Table -->
     <?php if (empty($feedbacklist)): ?>
-        <p>You have not given any feedback.</p>
+        <div class="no-feedback-container">
+            <p class="no-feedback">You have not given any feedback.</p>
+        </div>
     <?php else: ?>
         <table class="feedback-table">
             <thead>
@@ -106,7 +103,12 @@ $stmt->close();
                         <td><?= htmlspecialchars($feedback["Subject"]) ?></td>
                         <td><?= nl2br(htmlspecialchars($feedback["Content"])) ?></td>
                         <td><span class="rank"><?= htmlspecialchars($feedback["Rank"]) ?>/5</span></td>
-                        <td><span class="datetime"><?= htmlspecialchars($feedback["DateTimeCreated"]) ?></span></td>
+                        <td>
+                            <span class="datetime">
+                                <?= htmlspecialchars(date("F j, Y", strtotime($feedback["DateTimeCreated"]))) ?>
+                                <?= htmlspecialchars(date("h:i A", strtotime($feedback["DateTimeCreated"]))) ?>
+                            </span>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

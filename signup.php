@@ -36,18 +36,14 @@ function validateForm()
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/signup.css">
 
-    <!-- Box Icons -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
 </head>
 <body>
 <div class="signup-container">
+  <h2 class="signup-title">Membership Registration</h2>
   <form name="register" action="addmember.php" method="post" onsubmit="return validateForm()">
-    <h2 class="signup-title">Membership Registration</h2>
-
     <div class="form-group">
       <label class="form-label" for="name">Name:</label>
       <input class="form-input" name="name" id="name" type="text" required />
@@ -55,22 +51,22 @@ function validateForm()
 
     <div class="form-group">
       <label class="form-label" for="birthdate">Birth Date:</label>
-      <input class="form-input" name="birthdate" id="birthdate" type="date"/>
+      <input class="form-input" name="birthdate" id="birthdate" type="date" required />
     </div>
 
     <div class="form-group">
       <label class="form-label" for="address">Address:</label>
-      <textarea class="form-textarea" name="address" id="address" rows="4"></textarea>
+      <textarea class="form-textarea" name="address" id="address" rows="4" required ></textarea>
     </div>
 
     <div class="form-group">
       <label class="form-label" for="country">Country:</label>
-      <input class="form-input" name="country" id="country" type="text" />
+      <input class="form-input" name="country" id="country" type="text"  required />
     </div>
 
     <div class="form-group">
       <label class="form-label" for="phone">Phone:</label>
-      <input class="form-input" name="phone" id="phone" type="text" />
+      <input class="form-input" name="phone" id="phone" type="text"  required />
     </div>
 
     <div class="form-group">
@@ -97,8 +93,9 @@ function validateForm()
       <label class="form-label" for="pwdanswer">Password Answer:</label>
       <input class="form-input" name="pwdanswer" id="pwdanswer" type="text" required />
     </div>
-
-    <button class="signup-btn" type="submit">Register</button>
+    <div class="form-group-button">
+      <button class="signup-btn" type="submit">Register</button>
+    </div>
   </form>
 </div>
 

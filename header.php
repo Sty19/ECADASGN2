@@ -18,7 +18,6 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 
 <body>
-     <!-- Header Section Start -->
 <header class="header">
     <a href="index.php" class="logo"> <i class="fa-solid fa-baby"></i> BabyJoy</a>
 
@@ -37,6 +36,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="profile.php"> <i class="fa-solid fa-user-pen"></i> Edit Profile</a>
             <a href="logout.php"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         <?php else : ?>
+            <a href="signup.php"> <i class="fa-solid fa-user"></i> Sign Up</a>
             <a href="login.php"> <i class="fa-solid fa-right-to-bracket"></i> Login</a>
         <?php endif; ?>
     </nav>

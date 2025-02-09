@@ -43,16 +43,22 @@ if ($email_count == 0) {
             $_SESSION["ShopperID"] = $row["ShopperID"];
         }
         
-        $Message = "Profile Updated Successfully! <br/>";
+        $Message = "<div style='display: flex; justify-content: center; align-items: center; height: 100vh;'>
+                    <h3 style='color:green; font-size: 1.5rem;'>Profile Updated Successfully</h3>
+                    </div>";
         $_SESSION["ShopperName"] = $name;
     } else {
-        $Message = "<h3 style='color:red'>Error in updating record</h3>";
+        $Message = "<div style='display: flex; justify-content: center; align-items: center; height: 100vh;'>
+                    <h3 style='color:red; font-size: 1.5rem;'>Error updating account</h3>
+                    </div>";
     }
 
     $stmt->close();
     $conn->close();
 } else {
-    $Message = "<h3 style='color:red'>Email is already being used by another user</h3>";
+    $Message = "<div style='display: flex; justify-content: center; align-items: center; height: 100vh;'>
+                    <h3 style='color:red; font-size: 1.5rem;'>Email is already being used by another user</h3>
+                    </div>";
 }
 
 include("header.php");

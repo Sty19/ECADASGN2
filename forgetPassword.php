@@ -26,23 +26,23 @@ $conn->close();
     <title>Welcome to BabyJoy Store</title>
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
     <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/forgetpassword.css">
-
-    <!-- Box Icons -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
 </head>
 <body>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <div style="width:80%; margin:auto;">
 <form name="getQuestion" action="" method="post">
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="email">Account Email: </label>
         <div class="col-sm-9">
             <input class="form-control" name="email" id="email" type="email" required value="<?= htmlspecialchars($email) ?>" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label" for="email"></label>
+        <div class="col-sm-9">
             <button type="submit">Get Password Question</button>
         </div>
     </div>
@@ -64,7 +64,8 @@ $conn->close();
             </div>
         </div>
         <div class="mb-3 row">
-            <div class="col-sm-9 offset-sm-3">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
                 <button type="submit">Retrieve Password</button>
             </div>
         </div>
