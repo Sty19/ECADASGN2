@@ -197,3 +197,15 @@ section {
 }
 /* Sale Banner Style */
 
+.remove-item-btn {
+  background: none;
+  border: none;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.remove-item-btn:hover {
+  color: red;
+}
