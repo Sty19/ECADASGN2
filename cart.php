@@ -122,8 +122,11 @@ include("footer.php");
 function updateTotal() {
     var deliveryFee = parseInt(document.getElementById('deliveryMode').value);
     var subtotal = <?php echo $_SESSION['SubTotal']; ?>;
-    var shippingCharge = (subtotal > 200) ? 0 : deliveryFee;
-    var finalTotal = subtotal + shippingCharge;
+    
+    // Calculate total price based on selected delivery option
+    var finalTotal = subtotal + deliveryFee;
+
+    // Update the final total in the HTML
     document.getElementById('finalTotal').innerHTML = '<strong>Total:</strong> S$' + finalTotal.toFixed(2);
 }
 </script>
