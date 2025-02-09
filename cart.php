@@ -61,7 +61,7 @@ if (isset($_SESSION["Cart"])) {
             echo "<form action='cartFunctions.php' method='post'>"; 
             echo "<input type='hidden' name='action' value='remove' />"; 
             echo "<input type='hidden' name='product_id' value='{$row['ProductID']}'/>"; 
-			echo "<button type='submit' class='remove-item-btn'>Remove Item</button>";
+			echo "<button type='submit' class='remove-item-btn'><i class='fa-solid fa-trash-can'></i> Remove Item</button>";
             echo "</form>";
             echo "</td>";
             echo "</tr>";
