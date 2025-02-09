@@ -152,7 +152,7 @@ if ($_POST) {
         include("footer.php");
         exit;
     }
-	
+
     // Calculate subtotal from session items
     $subTotal = 0;
     foreach ($_SESSION['Items'] as $item) {
