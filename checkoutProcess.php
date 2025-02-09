@@ -13,23 +13,6 @@ include("header.php");
 include_once("myPayPal.php"); // Make sure this file contains your PayPal configurations
 include("db_config.php");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta ProductTitle="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to BabyJoy Store</title>
-    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/styles.css">
-    <link rel="stylesheet" type="text/css" href="ECAD2024Oct_Assignment_1_Input_Files/css/login.css">
-
-    <!-- Box Icons -->
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-
-</head>
-<body>
 
 <style>
         /* General Styles */
@@ -105,8 +88,7 @@ include("db_config.php");
             }
         }
     </style>
-</head>
-<body>
+
     <div class="container">
         <h1>Payment Cancelled</h1>
         <p>Your payment was not completed. What would you like to do next?</p>
@@ -124,7 +106,6 @@ include("db_config.php");
             <a href="products.php">Continue Shopping</a>
         </div>
     </div>
-</html>
 
 
 <?php
@@ -137,6 +118,41 @@ if ($_POST) {
         exit;
     }
 
+
+	// Validate stock levels
+	$allItemsAvailable = true;
+	$stockIssues = [];
+
+	foreach ($_SESSION['Items'] as $item) {
+		$stmt = $conn->prepare("SELECT Quantity FROM product WHERE ProductID = ?");
+		$stmt->bind_param("i", $item["productId"]);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_assoc();
+			if ($row["Quantity"] < $item["quantity"]) {
+				$allItemsAvailable = false;
+				$stockIssues[] = $item["name"] . " has only " . $row["Quantity"] . " unit(s) available.";
+			}
+		} else {
+			$allItemsAvailable = false;
+			$stockIssues[] = $item["name"] . " is not available.";
+		}
+
+		$stmt->close();
+	}
+
+    if (!$allItemsAvailable) {
+        echo "<div class='error-message'>";
+        foreach ($stockIssues as $issue) {
+            echo "<p>$issue</p>";
+        }
+        echo "</div>";
+        include("footer.php");
+        exit;
+    }
+	
     // Calculate subtotal from session items
     $subTotal = 0;
     foreach ($_SESSION['Items'] as $item) {
@@ -336,8 +352,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			
 			$ShipEmail = urldecode($httpParsedResponseAr["EMAIL"]);			
 			
-			// To Do 3: Insert an Order record with shipping information
-			//          Get the Order ID and save it in session variable.
+			// 	Insert an Order record with shipping information
+			//  Get the Order ID and save it in session variable.
 			$qry = "INSERT INTO orderdata (ShipName, ShipAddress, ShipCountry, 
 											ShipEmail, ShopCartID) 
 					VALUES (?, ?, ?, ?, ?)";

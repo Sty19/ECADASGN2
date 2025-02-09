@@ -137,6 +137,16 @@ header {
     margin-bottom: 10px;
 }
 
+.product .quantity {
+    font-size: 1rem;
+    color: #333;
+    margin: 10px 0; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-weight: bold;
+}
+
 .product .offer-price {
     color: #d9534f;
     font-weight: bold;
