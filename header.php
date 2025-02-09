@@ -26,6 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <a href="products.php">Browse Shop</a>
         <a href="cart.php">Cart (<?php echo isset($_SESSION["NumCartItem"]) ? $_SESSION["NumCartItem"] : 0; ?>)</a>
         <?php if (isset($_SESSION['ShopperID'])) : ?>
+            <a href="categories.php">Categories</a>
             <a href="feedback.php">Give Feedback</a>
             <a href="profile.php">Edit Profile</a>
             <a href="logout.php">Logout</a>

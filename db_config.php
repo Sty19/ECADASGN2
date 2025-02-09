@@ -3,7 +3,7 @@ $host = "localhost";
 $user = "root";  // Default XAMPP MySQL username
 $pass = "";      // Leave blank if no password
 $dbname = "ecadasgn1"; 
-$port = "3304";
+$port = "3306";
 
 // Create connection
 $conn = new mysqli($host, $user, $pass, $dbname, $port);
