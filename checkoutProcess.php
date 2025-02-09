@@ -120,27 +120,28 @@ if ($_POST) {
 
 
 	// Validate stock levels
-    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name); // Update with your database credentials
-    $allItemsAvailable = true;
-    $stockIssues = [];
+	$allItemsAvailable = true;
+	$stockIssues = [];
 
-    foreach ($_SESSION['Items'] as $item) {
-        $stmt = $conn->prepare("SELECT Quantity FROM product WHERE ProductID = ?");
-        $stmt->bind_param("i", $item["productId"]);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if ($row["Quantity"] < $item["quantity"]) {
-                $allItemsAvailable = false;
-                $stockIssues[] = $item["name"] . " has only " . $row["Quantity"] . " units available.";
-            }
-        } else {
-            $allItemsAvailable = false;
-            $stockIssues[] = $item["name"] . " is not available.";
-        }
-        $stmt->close();
-    }
+	foreach ($_SESSION['Items'] as $item) {
+		$stmt = $conn->prepare("SELECT Quantity FROM product WHERE ProductID = ?");
+		$stmt->bind_param("i", $item["productId"]);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_assoc();
+			if ($row["Quantity"] < $item["quantity"]) {
+				$allItemsAvailable = false;
+				$stockIssues[] = $item["name"] . " has only " . $row["Quantity"] . " unit(s) available.";
+			}
+		} else {
+			$allItemsAvailable = false;
+			$stockIssues[] = $item["name"] . " is not available.";
+		}
+
+		$stmt->close();
+	}
 
     if (!$allItemsAvailable) {
         echo "<div class='error-message'>";
