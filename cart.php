@@ -42,7 +42,7 @@ if (isset($_SESSION["Cart"])) {
         echo "<tbody>";
         while ($row = $result->fetch_array()) {
             echo "<tr>";
-            echo "<td style='width:50%'>{$row['Name']} <br />Product ID: {$row['ProductID']}</td>";
+            echo "<td style='width:50%'>{$row['Name']} <br /></td>";
             echo "<td>" . number_format($row["Price"], 2) . "</td>";
             echo "<td>";
             echo "<form action='cartFunctions.php' method='post'>";
