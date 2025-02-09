@@ -118,6 +118,40 @@ if ($_POST) {
         exit;
     }
 
+
+	// Validate stock levels
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name); // Update with your database credentials
+    $allItemsAvailable = true;
+    $stockIssues = [];
+
+    foreach ($_SESSION['Items'] as $item) {
+        $stmt = $conn->prepare("SELECT Quantity FROM product WHERE ProductID = ?");
+        $stmt->bind_param("i", $item["productId"]);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if ($row["Quantity"] < $item["quantity"]) {
+                $allItemsAvailable = false;
+                $stockIssues[] = $item["name"] . " has only " . $row["Quantity"] . " units available.";
+            }
+        } else {
+            $allItemsAvailable = false;
+            $stockIssues[] = $item["name"] . " is not available.";
+        }
+        $stmt->close();
+    }
+
+    if (!$allItemsAvailable) {
+        echo "<div class='error-message'>";
+        foreach ($stockIssues as $issue) {
+            echo "<p>$issue</p>";
+        }
+        echo "</div>";
+        include("footer.php");
+        exit;
+    }
+	
     // Calculate subtotal from session items
     $subTotal = 0;
     foreach ($_SESSION['Items'] as $item) {
@@ -317,8 +351,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			
 			$ShipEmail = urldecode($httpParsedResponseAr["EMAIL"]);			
 			
-			// To Do 3: Insert an Order record with shipping information
-			//          Get the Order ID and save it in session variable.
+			// 	Insert an Order record with shipping information
+			//  Get the Order ID and save it in session variable.
 			$qry = "INSERT INTO orderdata (ShipName, ShipAddress, ShipCountry, 
 											ShipEmail, ShopCartID) 
 					VALUES (?, ?, ?, ?, ?)";
