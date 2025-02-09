@@ -41,10 +41,10 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </nav>
     
-    <i class="fa-solid fa-user"></i> &nbsp;&nbsp;
-     <div class="welcome-message">
-    <h4><?php echo isset($_SESSION["ShopperName"]) ? $_SESSION["ShopperName"] : "Guest"; ?></h4>
-  </div>
+    <i class="fa-solid fa-user" style="color: white;"></i> &nbsp;&nbsp;
+<div class="welcome-message">
+  <h4><?php echo isset($_SESSION["ShopperName"]) ? $_SESSION["ShopperName"] : "Guest"; ?></h4>
+</div>
 </header>
 <!-- Header Section End -->
 
