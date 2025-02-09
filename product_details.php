@@ -50,13 +50,24 @@ $stmt->close(); // Close only after data is fully retrieved
             <?php endif; ?>
         </p>
         <p class="description"><?php echo htmlspecialchars($product['ProductDesc']); ?></p>
-        <form action="cartFunctions.php" method="post">
+        <form action="cartFunctions.php" method="post" onsubmit="return validateForm()">
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="product_id" value="<?php echo $productID; ?>">
-            <label class="quantity-label" for="quantity">Quantity:</label>
-            <input type="number" name="quantity" id="quantity" value="1" min="1" max="10" required>
-            <button type="submit" class="add-to-cart">Add to Cart</button>
+            <label for="quantity">Quantity:</label>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="<?php echo $product['Quantity']; ?>" required>
+            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
         </form>
+
+        <script>
+            function validateForm() {
+                var quantity = document.getElementById('quantity').value;
+                if (quantity < 1) {
+                    alert("Item is out of Stock!");
+                    return false;
+                }
+                return true;
+            }
+        </script>
         <a href="products.php" class="back-link">← Back to Products</a>
     </div>
 </div>
