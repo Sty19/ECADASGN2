@@ -39,10 +39,8 @@ $stmt->close(); // Close only after data is fully retrieved
     <div class="product-image">
         <img src="ECAD2024Oct_Assignment_1_Input_Files/Images/Products/<?php echo htmlspecialchars($product['ProductImage']); ?>" alt="<?php echo htmlspecialchars($product['ProductTitle']); ?>">
     </div>
-
     <div class="product-info">
         <h1><?php echo htmlspecialchars($product['ProductTitle']); ?></h1>
-
         <p class="price">
             <?php if ($product['OfferedPrice'] > 0): ?>
                 <span class="original-price">$<?php echo number_format($product['Price'], 2); ?></span>
@@ -51,19 +49,14 @@ $stmt->close(); // Close only after data is fully retrieved
                 $<?php echo number_format($product['Price'], 2); ?>
             <?php endif; ?>
         </p>
-
         <p class="description"><?php echo htmlspecialchars($product['ProductDesc']); ?></p>
-
         <form action="cartFunctions.php" method="post">
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="product_id" value="<?php echo $productID; ?>">
-
             <label class="quantity-label" for="quantity">Quantity:</label>
             <input type="number" name="quantity" id="quantity" value="1" min="1" max="10" required>
-
             <button type="submit" class="add-to-cart">Add to Cart</button>
         </form>
-
         <a href="products.php" class="back-link">← Back to Products</a>
     </div>
 </div>
